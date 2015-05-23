@@ -63,7 +63,13 @@ angular.module('acServerManager.services', ['ngResource']).
 				var result = resource.save(data, function () {
                     callback(result);
                 });
-			}
+			},
+			GetServerStatus: function(callback) {
+                var resource = $resource('/api/server/status');
+                var result = resource.get(function() {
+                    callback(result);
+                });
+            },
         };
     }).
 	factory('BookService', function($resource) {

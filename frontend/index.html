@@ -89,6 +89,39 @@
 					<img src="/img/ajax-loader.gif" alt="Loading" ng-show="sTrackerServerStatus === -1" />
 				</div>
 			</div>
+		</fieldset>
+		
+		<fieldset class="top10" ng-show="acServerStatus === 1">
+			<legend>Server Status</legend>
+			<div class="row">
+				<div class="col-sm-12">
+					<p>Current Session: {{serverStatus.session}}</p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<h4>Drivers</h4>
+					<p ng-hide="serverStatus.drivers.length">There are currently no drivers on the server</p>
+					<div ng-show="serverStatus.drivers.length" class="table-responsive">
+						<table class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Car</th>
+									<th>Time Joined</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="driver in serverStatus.drivers">
+									<td>{{driver.name}}</td>
+									<td>{{driver.car}}</td>
+									<td>{{driver.timeJoined}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
 		</fieldset>  
 	  </form>
 

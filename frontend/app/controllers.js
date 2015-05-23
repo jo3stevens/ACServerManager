@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('acServerManager')
-	.controller('StatusCtrl', function($scope, $timeout, ProcessService) {
+	.controller('StatusCtrl', function($scope, $timeout, ProcessService, ServerService) {
 		$scope.alerts = [];
 		
 		(function getACServerStatus() {
@@ -15,6 +15,13 @@ angular.module('acServerManager')
 			ProcessService.STrackerServerStatus(function(data){
 				$scope.sTrackerServerStatus = data.status;
 				$timeout(getSTrackerServerStatus, 2000);
+			});
+		})();
+		
+		(function getServerStatus() {
+			ServerService.GetServerStatus(function(data){
+				$scope.serverStatus = data;
+				$timeout(getServerStatus, 2000);
 			});
 		})();
 		
