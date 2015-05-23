@@ -597,8 +597,11 @@ app.post('/api/acserver', function(req, res) {
 				acServerStatus = 1;
 			}
 			
-			console.log('stdout: ' + data);
-			writeLogFile('server_' + acServerLogName, getDateTimeString() + ': ' + data);
+			if (String(data).indexOf('PAGE: /ENTRY') === -1) {
+				console.log(data);
+				writeLogFile('server_' + acServerLogName, getDateTimeString() + ': ' + data);
+			}
+			
 		});
 		acServer.stderr.on('data', function(data) {
 			console.log('stderr: ' + data);
@@ -664,7 +667,7 @@ app.post('/api/strackerserver', function(req, res) {
 				sTrackerServerStatus = 1;
 			}
 			
-			console.log('stdout: ' + data);
+			console.log(data);
 		});
 		sTracker.stderr.on('data', function(data) {
 			console.log('stderr: ' + data);
