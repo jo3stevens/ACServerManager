@@ -35,3 +35,19 @@ Open settings.js and set the correct values for your setup:
 The server will now be running. You'll be able to see any server output in the command window and it will be logged to a file in the AcServerManager folder.
 
 You can change any setting and it will be applied directly to server_cfg.ini and entry_list.ini on the server. After making a change just stop and start the server from the Server Status page.
+
+##Screenshots
+###Server Status
+![Server Status](http://yeahyou.com/ACServerManager/server-status.jpg)
+
+###Server Configuration
+![Server Config](http://www.yeahyou.com/ACServerManager/server-config.jpg)
+
+###Entry List
+![Server Config](http://www.yeahyou.com/ACServerManager/entry-list.jpg)
+
+###Rules
+![Server Config](http://www.yeahyou.com/ACServerManager/rules.jpg)
+
+###Advanced
+![Server Config](http://www.yeahyou.com/ACServerManager/advanced.jpg)
