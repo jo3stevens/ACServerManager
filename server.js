@@ -620,7 +620,7 @@ app.post('/api/acserver', function(req, res) {
 				
 				//Set current session
 				if (dataString.indexOf('session name') !== -1) {
-					currentSession = dataString.substr(dataString.indexOf('session name:') + 14, dataString.indexOf('\n')).trim();
+					currentSession = dataString.substr(dataString.indexOf('session name :') + 14, dataString.indexOf('\n')).trim();
 				}
 							
 				//New driver
