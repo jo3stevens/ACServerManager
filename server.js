@@ -18,7 +18,6 @@ var sTrackerServerPid;
 var acServerLogName;
 
 var currentSession;
-var currentDrivers = [];
 
 var config = ini.parse(fs.readFileSync(serverPath + 'cfg/server_cfg.ini', 'utf-8'))
 var entryList = ini.parse(fs.readFileSync(serverPath + 'cfg/entry_list.ini', 'utf-8'))
@@ -84,7 +83,7 @@ app.get('/api/server', function(req, res) {
 app.get('/api/server/status', function(req, res) {
 	try {
 		res.status(200);
-		res.send({ session: currentSession, drivers: currentDrivers });
+		res.send({ session: currentSession });
 	}catch(e) {
 		console.log('Error: GET/api/server/status - ' + e);
 		res.status(500);
@@ -621,30 +620,6 @@ app.post('/api/acserver', function(req, res) {
 				//Set current session
 				if (dataString.indexOf('session name') !== -1) {
 					currentSession = dataString.substr(dataString.indexOf('session name :') + 14, dataString.indexOf('\n')).trim();
-				}
-							
-				//New driver
-				if (dataString.indexOf('Sending first leaderboard to car') === 0) { //eg. Sending first leaderboard to car: ferrari_laferrari (0) [Joe Stevens []]
-					var car = dataString.substr(dataString.indexOf(':') + 1); //Remove leading text
-					car = car.substr(0, car.indexOf('(')).trim(); //Remove other text
-					var driver = dataString.substr(dataString.indexOf('[') + 1); //Get driver name removing leading text
-					driver = driver.substr(0, driver.indexOf('[')).trim(); //Remove other text
-					
-					currentDrivers.push({ name: driver, car: car, timeJoined: new Date().toLocaleString('en-GB') });
-				}
-				
-				//Driver left server
-				if (dataString.indexOf('driver disconnected') !== -1) { //eg. Clean exit, driver disconnected:  Joe Stevens []
-					var driverName = dataString.substr(dataString.indexOf(':') + 1);
-					driverName = driverName.substr(0, driverName.indexOf('[]')).trim();
-					
-					var driver = currentDrivers.filter(function(item) {
-						return item.name === driverName;
-					});
-					
-					if (driver) {
-						currentDrivers.splice(currentDrivers.indexOf(driver), 1);
-					}
 				}
 			}
 			
