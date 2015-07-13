@@ -4,6 +4,9 @@ var ini = require('ini');
 var bodyParser = require('body-parser');
 var childProcess = require('child_process');
 var basicAuth = require('node-basicauth');
+var jsonfile = require('jsonfile');
+var util = require('util');
+
 var settings = require('./settings');
  
 var serverPath = settings.serverPath;
@@ -583,6 +586,25 @@ app.post('/api/entrylist', function(req, res) {
 	res.send('OK');
 });
 
+//api/drivers
+app.post('/api/drivers', function(req, res) {
+	try {
+		fs.exists('', function(exists) {
+			if (exists) {
+				
+			}
+		});
+	}
+	catch(e) {
+		console.log("Failed to save drivers");
+		res.send(500);
+		res.send("Failed to save drivers");
+	}
+
+	res.status(200);
+	res.send('OK');
+});
+
 //api/acserver
 app.get('/api/acserver/status', function(req, res) {
 	try {
@@ -619,7 +641,8 @@ app.post('/api/acserver', function(req, res) {
 				
 				//Set current session
 				if (dataString.indexOf('session name') !== -1) {
-					currentSession = dataString.substr(dataString.indexOf('session name :') + 14, dataString.indexOf('\n')).trim();
+					var session = dataString.substr(dataString.indexOf('session name :') + 14);
+					currentSession = session.substr(0, dataString.indexOf('\n')).trim();
 				}
 			}
 			
