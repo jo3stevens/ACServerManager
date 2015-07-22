@@ -1,11 +1,12 @@
 {
-  "name": "acsm"
-, "version": "0.0.1"
-, "description": "Manage Assetto Corsa server configuration"
-, "main": "server.js"
-, "author": "Joe Stevens"
-, "dependencies": {
+  "name": "acsm",
+  "version": "0.0.1",
+  "description": "Manage Assetto Corsa server configuration",
+  "main": "server.js",
+  "author": "Joe Stevens",
+  "dependencies": {
+    "body-parser": "latest",
     "express": "latest",
-	"body-parser": "latest"
+    "jsonfile": "^2.2.1"
   }
 }

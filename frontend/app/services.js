@@ -207,4 +207,26 @@ angular.module('acServerManager.services', ['ngResource']).
                 });
             }
         };
+    }).
+	factory('DriverService', function($resource) {
+        return {
+            GetDrivers: function(callback) {
+                var resource = $resource('/api/drivers');
+                var result = resource.query(function() {
+                    callback(result);
+                });
+            },
+			SaveDriver: function(data, callback) {
+                var resource = $resource('/api/drivers');
+                var result = resource.save(data, function() {
+                    callback(result);
+                });
+            },
+			DeleteDriver: function(guid, callback) {
+                var resource = $resource('/api/drivers/:guid');
+                var result = resource.delete({guid: guid}, function() {
+                    callback(result);
+                });
+            }
+        };
     });

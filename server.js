@@ -578,7 +578,7 @@ app.post('/api/entrylist', function(req, res) {
 	}
 	catch(e) {
 		console.log("Failed to save entry list");
-		res.send(500);
+		res.status(500);
 		res.send("Failed to save entry list")
 	}
 
@@ -587,20 +587,96 @@ app.post('/api/entrylist', function(req, res) {
 });
 
 //api/drivers
+app.get('/api/drivers', function(req, res) {
+	try {
+		var drivers = [];
+		
+		jsonfile.readFile(__dirname + '/drivers.json', function(err, data) {
+			if (!err) {
+				drivers = data;
+			}
+			
+			res.status(200);
+			res.send(drivers)
+		});
+	}
+	catch(e) {
+		console.log("Failed to retrieve drivers");
+		res.status(500);
+		res.send("Failed to retrieve drivers");
+	}
+});
+
 app.post('/api/drivers', function(req, res) {
 	try {
-		fs.exists('', function(exists) {
-			if (exists) {
-				
+		var drivers = [];
+		var driver = {};
+		for(var param in req.body) {
+			driver[param.toUpperCase()] = req.body[param];
+		}
+		
+		jsonfile.readFile(__dirname + '/drivers.json', function(err, data) {
+			if (!err) {
+				drivers = data;
 			}
+			
+			drivers.push(driver);
+			
+			jsonfile.writeFile(__dirname + '/drivers.json', drivers, function (err) {
+				if (err) {
+					console.error(err);
+					throw err;
+				}
+			 });
 		});
 	}
 	catch(e) {
 		console.log("Failed to save drivers");
-		res.send(500);
+		res.status(500);
 		res.send("Failed to save drivers");
 	}
 
+	res.status(200);
+	res.send('OK');
+});
+
+app.delete('/api/drivers/:guid', function(req, res) {
+	try {
+		var guid = req.params.guid;
+		if (!guid) {
+			throw "GUID not provided";
+		}
+		
+		jsonfile.readFile(__dirname + '/drivers.json', function(err, data) {
+			if (err) {
+				throw err;
+			}
+			
+			var found = data.filter(function(item) {
+				return item.GUID == guid;
+			});
+					
+			if (found) {
+				for(i = 0; i < found.length; i++) {
+					data.splice(data.indexOf(found[i]), 1);	
+				}
+				
+				jsonfile.writeFile(__dirname + '/drivers.json', data, function (err) {
+					if (err) {
+						console.error(err);
+						throw err;
+					}
+				 });
+			}
+		});
+	}
+	catch(e) {
+		console.log('Error: DELETE/api/drivers - ' + e);
+		res.status(500);
+		res.send("Failed to delete driver");
+		return;
+	}
+	
 	res.status(200);
 	res.send('OK');
 });

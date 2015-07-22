@@ -397,7 +397,7 @@ angular.module('acServerManager')
 				if (result[0] === 'O' && result[1] === 'K') {
 					createAlert('success', 'Saved successfully', true);
 				} else {
-					createAlert('warning', 'Save failed');
+					createAlert('warning', 'Save failed', true);
 				}
 			});
 		}
@@ -412,9 +412,11 @@ angular.module('acServerManager')
 			}
 		}
 	})
-	.controller('EntryListCtrl', function($scope, $timeout, ServerService, CarService, EntryListService) {	
+	.controller('EntryListCtrl', function($scope, $timeout, $filter, ServerService, CarService, EntryListService, DriverService) {	
 		$scope.alerts = [];
 		$scope.entryList = [];
+		$scope.drivers =[];
+		$scope.amount = 1;
 		$scope.newEntry = {
 			DRIVERNAME: '',
 			TEAM: '',
@@ -423,6 +425,13 @@ angular.module('acServerManager')
 			GUID: '',
 			SPECTATOR_MODE: ''
 		};
+		
+		$scope.$watchCollection('newEntry', function (newVal, oldVal) {
+			$scope.disableAmount = newVal.DRIVERNAME || newVal.TEAM || newVal.GUID
+			if ($scope.disableAmount) {
+				$scope.amount = 1;
+			}
+		});
 		
 		ServerService.GetServerDetail('cars', function (data) {		
 			$scope.cars = data.value.split(';');
@@ -439,6 +448,10 @@ angular.module('acServerManager')
 			});
 		});
 		
+		DriverService.GetDrivers(function (data) {
+			$scope.drivers = data;
+		});
+		
 		$scope.selectedCarChanged = function() {
 			CarService.GetSkins($scope.newEntry.MODEL, function(data) {
 				$scope.skins = data.skins;
@@ -451,7 +464,21 @@ angular.module('acServerManager')
 		}
 		
 		$scope.submit = function() {
-			$scope.entryList.push($scope.newEntry);
+			$scope.$broadcast('show-errors-check-validity');
+			
+			if ($scope.form.$invalid) { 
+				createAlert('warning', 'There are errors on the form', true);
+				return; 
+			}
+			
+			for(var i=1; i <= $scope.amount; i++) {
+				var entry = angular.copy($scope.newEntry);
+				if ($scope.random) {
+					entry.SKIN = $scope.skins[Math.floor(Math.random() * $scope.skins.length)];
+				}
+				$scope.entryList.push(entry);
+			}
+			
 			$scope.newEntry = {
 				DRIVERNAME: '',
 				TEAM: '',
@@ -463,7 +490,7 @@ angular.module('acServerManager')
 			$scope.selectedCarChanged();
 		}
 		
-		$scope.saveChanges = function() {
+		$scope.saveChanges = function() {	
 			var data = {};
 			angular.forEach($scope.entryList, function(value) {
 				value.SPECTATOR_MODE = value.SPECTATOR_MODE ? 1 : 0;
@@ -472,9 +499,9 @@ angular.module('acServerManager')
 			
 			EntryListService.SaveEntryList(data, function(result) {
 				if (result[0] === 'O' && result[1] === 'K') {
-					createAlert('success', 'Saved successfully`', true);
+					createAlert('success', 'Saved successfully', true);
 				} else {
-					createAlert('warning', 'Save failed');
+					createAlert('warning', 'Save failed', true);
 				}
 			});
 		}
@@ -483,6 +510,47 @@ angular.module('acServerManager')
 			if (confirm('Are you sure?')) {
 				$scope.entryList = [];
 			}
+		}
+		
+		$scope.addDriver = function () {
+			$scope.$broadcast('show-errors-check-validity');
+			
+			if ($scope.createForm.$invalid) { 
+				createAlert('warning', 'There are errors on the form', true);
+				return; 
+			}
+			
+			DriverService.SaveDriver($scope.newDriver, function(result) {
+				if (result[0] === 'O' && result[1] === 'K') {
+					$scope.drivers.push($scope.newDriver);
+					$scope.newDriver = {};
+				} else {
+					createAlert('warning', 'Save failed', true);
+				}
+			});
+		}
+		
+		$scope.deleteDriver = function(guid) {
+			if (!confirm('Are you sure you want to delete this driver?')) return;
+			
+			DriverService.DeleteDriver(guid, function(result) {
+				if (result[0] === 'O' && result[1] === 'K') {
+					var found = $filter('filter')($scope.drivers, { GUID: guid }, true);
+					if (found.length) {
+						angular.forEach(found, function(value, key) {
+							$scope.drivers.splice(key, 1);
+						});
+					}
+				} else {
+					createAlert('warning', 'Delete failed', true);
+				}
+			});
+		}
+		
+		$scope.selectDriver = function(driver) {
+			$scope.newEntry.DRIVERNAME = driver.NAME;
+			$scope.newEntry.TEAM = driver.TEAM;
+			$scope.newEntry.GUID = driver.GUID;
 		}
 		
 		function createAlert(type, msg, autoClose) {
