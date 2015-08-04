@@ -197,12 +197,31 @@
 							<input class="form-control" name="session_wait_time" ng-model="selectedSession.data.WAIT_TIME">
 						</div>						
 					</div>
-					<div class="col-sm-3" ng-hide="selectedSession.hideRaceOverTime">
+					<div class="col-sm-3" ng-hide="selectedSession.hideJoinType">
 						<div class="form-group">
-							<label>Race Over Time</label>
-							<input class="form-control" name="session_race_over_time" ng-model="server.RACE_OVER_TIME">
+							<label>Join Type</label>
+							<select class="form-control" ng-model="selectedSession.data.IS_OPEN">
+								<option value="0">Close</option>
+								<option value="1">Open</option>
+								<option value="2">Close at start</option>
+							</select>
 						</div>						
 					</div>
+					<div class="col-sm-3" ng-hide="selectedSession.hideCanJoin">
+						<div class="checkbox top30">
+							<label>
+								<input type="checkbox" ng-model="selectedSession.data.IS_OPEN"> Can Join
+							</label>
+						</div>						
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label>Race Over Time</label>
+						<input class="form-control" name="session_race_over_time" ng-model="server.RACE_OVER_TIME">
+					</div>						
 				</div>
 			</div>
 		</fieldset>
@@ -242,6 +261,13 @@
 					<div class="checkbox">
 						<label>
 							<input type="checkbox" ng-model="server.PICKUP_MODE_ENABLED"> Pickup Mode Enabled
+						</label>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" ng-model="server.REGISTER_TO_LOBBY"> Show on Lobby
 						</label>
 					</div>
 				</div>

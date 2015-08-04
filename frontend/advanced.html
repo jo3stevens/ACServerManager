@@ -80,8 +80,19 @@
 			<div class="row">
 				<div class="col-sm-4">
 					<div class="form-group" show-errors>
+						<label>Kick Vote Quorum</label>
+						<input class="form-control" name="kick_vote_quorum" ng-model="server.KICK_QUORUM" required>
+					 </div>
+				</div>
+				<div class="col-sm-4">
+					<div class="form-group" show-errors>
 						<label>Blacklist Mode</label>
-						<input class="form-control" name="blacklist_mode" ng-model="server.BLACKLIST_MODE" required>
+						<!-- <input class="form-control" name="blacklist_mode" ng-model="server.BLACKLIST_MODE" required> -->
+						<select class="form-control" name="blacklist_mode" ng-model="server.BLACKLIST_MODE">
+							<option value="0">Kick Player</option>
+							<option value="1">Ban Until Restart</option>
+							<option value="2">Ban and Forget</option>
+						</select>
 					 </div>
 				</div>
 				<div class="col-sm-4">

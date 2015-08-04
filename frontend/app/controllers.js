@@ -82,7 +82,8 @@ angular.module('acServerManager')
 				hideTime: false,
 				hideLaps: true,
 				hideWaitTime: true,
-				hideRaceOverTime: true,
+				hideCanJoin: true,
+				hideJoinType: true,
 				enabled: data.NAME !== undefined,
 				data: data
 			});
@@ -90,24 +91,28 @@ angular.module('acServerManager')
 		});
 		
 		PracticeService.GetPracticeDetails(function (data) {
+			data.IS_OPEN = data.IS_OPEN == 1;
 			$scope.sessions.push({
 				type: 'Practice',
 				hideTime: false,
 				hideLaps: true,
 				hideWaitTime: false,
-				hideRaceOverTime: true,
+				hideCanJoin: false,
+				hideJoinType: true,
 				enabled: data.NAME !== undefined,
 				data: data
 			});
 		});
 		
 		QualifyService.GetQualifyDetails(function (data) {
+			data.IS_OPEN = data.IS_OPEN == 1;
 			$scope.sessions.push({
 				type: 'Qualify',
 				hideTime: false,
 				hideLaps: true,
 				hideWaitTime: false,
-				hideRaceOverTime: true,
+				hideCanJoin: false,
+				hideJoinType: true,
 				enabled: data.NAME !== undefined,
 				data: data
 			});
@@ -119,7 +124,8 @@ angular.module('acServerManager')
 				hideTime: true,
 				hideLaps: false,
 				hideWaitTime: false,
-				hideRaceOverTime: false,
+				hideCanJoin: true,
+				hideJoinType: false,
 				enabled: data.NAME !== undefined,
 				data: data
 			});
@@ -139,6 +145,7 @@ angular.module('acServerManager')
 			
 			data.LOOP_MODE = data.LOOP_MODE == 1;
 			data.PICKUP_MODE_ENABLED = data.PICKUP_MODE_ENABLED == 1;
+			data.REGISTER_TO_LOBBY = data.REGISTER_TO_LOBBY == 1;
 			
 			var time = getTime(data.SUN_ANGLE);
 			$scope.hours = time.getHours();
@@ -186,6 +193,7 @@ angular.module('acServerManager')
 			
 			data.LOOP_MODE = $scope.server.LOOP_MODE ? 1 : 0;
 			data.PICKUP_MODE_ENABLED = $scope.server.PICKUP_MODE_ENABLED ? 1 : 0;
+			data.REGISTER_TO_LOBBY = $scope.server.REGISTER_TO_LOBBY ? 1 : 0;
 			data.CARS = $scope.selectedCars.join(';');
 			data.TRACK = $scope.selectedTracks; //TODO: Multi-track
 			data.SUN_ANGLE = getSunAngle($scope.hours, $scope.mins);
@@ -216,6 +224,9 @@ angular.module('acServerManager')
 				if(!practice.enabled) {
 					practice.data = {};
 				}
+				else {
+					practice.data.IS_OPEN = practice.data.IS_OPEN ? 1 : 0;
+				}
 				
 				PracticeService.SavePracticeDetails(practice.data, function(result) {
 					if (!(result[0] === 'O' && result[1] === 'K')) {
@@ -228,6 +239,9 @@ angular.module('acServerManager')
 			if (qualify !== null) {
 				if(!qualify.enabled) {
 					qualify.data = {};
+				}
+				else {
+					qualify.data.IS_OPEN = qualify.data.IS_OPEN ? 1 : 0;
 				}
 				
 				QualifyService.SaveQualifyDetails(qualify.data, function(result) {
@@ -320,6 +334,7 @@ angular.module('acServerManager')
 			data.AUTOCLUTCH_ALLOWED = data.AUTOCLUTCH_ALLOWED == 1;
 			data.STABILITY_ALLOWED = data.STABILITY_ALLOWED == 1;
 			data.TYRE_BLANKETS_ALLOWED = data.TYRE_BLANKETS_ALLOWED == 1;
+			data.FORCE_VIRTUAL_MIRROR = data.FORCE_VIRTUAL_MIRROR == 1;
 			
 			$scope.server = data;
 		});
@@ -342,6 +357,7 @@ angular.module('acServerManager')
 			data.AUTOCLUTCH_ALLOWED = $scope.server.AUTOCLUTCH_ALLOWED ? 1 : 0;
 			data.STABILITY_ALLOWED = $scope.server.STABILITY_ALLOWED ? 1 : 0;
 			data.TYRE_BLANKETS_ALLOWED = $scope.server.TYRE_BLANKETS_ALLOWED ? 1 : 0;
+			data.FORCE_VIRTUAL_MIRROR = $scope.server.FORCE_VIRTUAL_MIRROR ? 1 : 0;
 			
 			var saved = true;
 			

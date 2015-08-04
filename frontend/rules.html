@@ -98,6 +98,13 @@
 							</label>
 						</div>
 					</div>
+					<div class="col-sm-2">
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" ng-model="server.FORCE_VIRTUAL_MIRROR"> Force Virtual Mirror
+							</label>
+						</div>
+					</div>
 				</div>
 			</fieldset>
 			
@@ -149,7 +156,13 @@
 					<div class="col-sm-3">
 						<div class="form-group" show-errors>
 							<label>Allowed Tyres Out</label>
-							<input class="form-control" name="allowed_tyres_out" ng-model="server.ALLOWED_TYRES_OUT" required>
+							<select class="form-control" ng-model="server.ALLOWED_TYRES_OUT">
+								<option value="0">0</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="5">5</option>
+							</select>
 						 </div>
 					</div>
 					<div class="col-sm-3" show-errors>
