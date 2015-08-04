@@ -60,22 +60,28 @@
 			<fieldset>
 				<legend>Add Player</legend>
 				<div class="row">
-					<div class="col-sm-4">
+					<div class="col-sm-3">
 						<div class="form-group">
 							<label>Name</label> <a href="javascript:void(0);" title="Driver Manager" data-toggle="modal" data-target="#playerManager"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>
 							<input class="form-control" ng-model="newEntry.DRIVERNAME">
 						 </div>
 					</div>
-					<div class="col-sm-4">
+					<div class="col-sm-3">
 						<div class="form-group">
 							<label>Team</label>
 							<input class="form-control" ng-model="newEntry.TEAM">
 						 </div>
 					</div>
-					<div class="col-sm-4">
+					<div class="col-sm-3">
 						<div class="form-group">
 							<label>GUID</label>
 							<input class="form-control" ng-model="newEntry.GUID">
+						 </div>
+					</div>
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label>Ballast (Kg)</label>
+							<input type="number" min="0" required class="form-control" ng-model="newEntry.BALLAST">
 						 </div>
 					</div>
 				</div>
@@ -138,6 +144,7 @@
 										<th>Car</th>
 										<th>Skin</th>
 										<th>Spectator</th>
+										<th>Ballast</th>
 										<th></th>
 									</tr>
 								</thead>
@@ -149,12 +156,13 @@
 										<td>{{entry.MODEL}}</td>
 										<td>{{entry.SKIN}}</td>
 										<td>{{entry.SPECTATOR_MODE ? 'Yes' : 'No'}}</td>
+										<td>{{entry.BALLAST}}</td>
 										<td><a title="Remove" href="javascript:void(0);" ng-click="removeEntry($index)"><span class="glyphicon glyphicon-remove aria-hidden="true"></span><a/></td>
 									</tr>
 								</tbody>
 								<tfoot>
 									<tr>
-										<td colspan="7" style="text-align: right;">
+										<td colspan="8" style="text-align: right;">
 											<button type="button" class="btn btn-primary" ng-click="clear()">Clear</button>
 										</td>
 									</tr>
