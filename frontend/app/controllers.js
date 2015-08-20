@@ -72,7 +72,7 @@ angular.module('acServerManager')
 			}
 		}
 	})
-	.controller('ServerCtrl', function ($scope, $filter, $timeout, CarService, TrackService, ServerService, BookService, PracticeService, QualifyService, RaceService) {
+	.controller('ServerCtrl', function ($scope, $filter, $timeout, CarService, TrackService, ServerService, BookService, PracticeService, QualifyService, RaceService, TyreService) {
 		$scope.sessions = [];
 		$scope.alerts = [];
 		
@@ -142,6 +142,7 @@ angular.module('acServerManager')
 		ServerService.GetServerDetails(function (data) {
 			$scope.selectedCars = data.CARS.split(';');
 			$scope.selectedTracks = data.TRACK; //TODO: Multi-track
+			$scope.selectedTyres = data.LEGAL_TYRES.split(';');
 			
 			data.LOOP_MODE = data.LOOP_MODE == 1;
 			data.PICKUP_MODE_ENABLED = data.PICKUP_MODE_ENABLED == 1;
@@ -153,8 +154,79 @@ angular.module('acServerManager')
 			
 			$scope.server = data;
 			
+			$scope.carsChanged();
 			$scope.trackChanged();
 		});
+		
+		$scope.carsChanged = function() {
+			if ($scope.selectedCars.length == 0) {
+				$scope.tyres = [];
+				return;
+			}
+			
+			TyreService.GetTyres($scope.selectedCars.join(','), function(result) {				
+				//Restructure the object to something that is nicer to format
+				var tyreTypes = {};
+				angular.forEach(result, function(value, key) {
+					if (key !== '$promise' ) {
+						var car = key;
+						angular.forEach(value, function(value, key) {
+							if (!tyreTypes[key]) {
+								tyreTypes[key] = [];
+							}
+							
+							var desc = findInArray(tyreTypes[key], { desc: value });
+							if (desc == null) {
+								desc = { desc: value };
+								desc.cars = [];
+								tyreTypes[key].push(desc);
+							}
+
+							desc.cars.push(car);
+							
+						});
+					}
+				});
+				
+				//Use the new format to create a flat object array for binding
+				$scope.tyres = [];
+				angular.forEach(tyreTypes, function(typeValue, typeKey) {
+					var tyre = { value: typeKey };
+					var description = typeKey + ':';
+					angular.forEach(typeValue, function(descValue, descKey) {
+						description += descValue.desc + ' (';
+						angular.forEach(descValue.cars, function(carValue, carKey) {
+							description += carValue + ',';
+						});
+						description = description.substring(0, description.length - 1) + ') ';
+					});
+					tyre.description = description.trim();
+					$scope.tyres.push(tyre);
+				});
+				
+				//Remove any selected tyres that are no longer available after a car change
+				$scope.selectedTyres = $scope.selectedTyres.filter(function(element) {
+					var found = findInArray($scope.tyres, { value: element });
+					return found !== null;
+				});
+				
+				//If there are no selected tyres in cfg, this is the same as having all available
+				if ($scope.selectedTyres.length === 0) {
+					angular.forEach($scope.tyres, function(value, key) {
+						$scope.selectedTyres.push(value.value);
+					});
+				}
+			});
+		}
+		
+		$scope.tyresChanged = function() {
+			//If there are no selected tyres in cfg, this is the same as having all available
+			if ($scope.selectedTyres.length === 0) {
+				angular.forEach($scope.tyres, function(value, key) {
+					$scope.selectedTyres.push(value.value);
+				});
+			}
+		}
 		
 		$scope.trackChanged = function() {
 			var track = findInArray($scope.tracks, {name: $scope.selectedTracks})
@@ -196,6 +268,7 @@ angular.module('acServerManager')
 			data.REGISTER_TO_LOBBY = $scope.server.REGISTER_TO_LOBBY ? 1 : 0;
 			data.CARS = $scope.selectedCars.join(';');
 			data.TRACK = $scope.selectedTracks; //TODO: Multi-track
+			data.LEGAL_TYRES = $scope.selectedTyres.length === $scope.tyres.length ? '' : $scope.selectedTyres.join(';');
 			data.SUN_ANGLE = getSunAngle($scope.hours, $scope.mins);
 			
 			var saved = true;

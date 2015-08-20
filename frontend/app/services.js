@@ -229,4 +229,14 @@ angular.module('acServerManager.services', ['ngResource']).
                 });
             }
         };
+    }).
+	factory('TyreService', function($resource) {
+        return {
+            GetTyres: function(cars, callback) {
+                var resource = $resource('/api/tyres');
+                var result = resource.get({cars: cars}, function() {
+                    callback(result);
+                });
+            }
+        };
     });

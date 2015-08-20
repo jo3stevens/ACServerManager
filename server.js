@@ -6,6 +6,7 @@ var childProcess = require('child_process');
 var basicAuth = require('node-basicauth');
 var jsonfile = require('jsonfile');
 var util = require('util');
+var extend = require('node.extend');
 
 var settings = require('./settings');
  
@@ -24,6 +25,14 @@ var currentSession;
 
 var config = ini.parse(fs.readFileSync(serverPath + 'cfg/server_cfg.ini', 'utf-8'))
 var entryList = ini.parse(fs.readFileSync(serverPath + 'cfg/entry_list.ini', 'utf-8'))
+var ksTyres = ini.parse(fs.readFileSync(serverPath + 'manager/ks_tyres.ini', 'utf-8'))
+
+var modTyres;
+fs.exists(serverPath + 'manager/mod_tyres.ini', function(exists) {
+  if (exists) {
+	  modTyres = ini.parse(fs.readFileSync(serverPath + 'manager/mod_tyres.ini', 'utf-8'))
+  }
+});
 
 function saveConfig() {
   fs.writeFileSync(serverPath + 'cfg/server_cfg.ini', ini.stringify(config));
@@ -679,6 +688,35 @@ app.delete('/api/drivers/:guid', function(req, res) {
 	
 	res.status(200);
 	res.send('OK');
+});
+
+//api/tyres
+app.get('/api/tyres', function(req, res) {
+	try {
+		var result = ksTyres;
+		if (modTyres) {
+			result = extend(ksTyres, modTyres)
+		}
+		
+		if (req.query.cars) {
+			var cars = req.query.cars.split(',');
+			var filtered = {};
+			for(var car in cars) {
+				if (result[cars[car]]) {
+					filtered[cars[car]] = result[cars[car]];
+				}
+			}
+			result = filtered;
+		}
+		
+		res.status(200);
+		res.send(result)
+	}
+	catch(e) {
+		console.log("Failed to retrieve tyres");
+		res.status(500);
+		res.send("Failed to retrieve tyres");
+	}
 });
 
 //api/acserver

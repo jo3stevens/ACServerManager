@@ -112,7 +112,7 @@
 				<div class="col-sm-6">
 					<div class="form-group">
 						<label>Cars</label>
-						<select multiple size="10" class="form-control" ng-model="selectedCars" ng-options="car as car for car in cars">
+						<select multiple size="10" class="form-control" ng-model="selectedCars" ng-options="car as car for car in cars" ng-change="carsChanged()">
 						</select>
 					 </div>
 				</div>
@@ -149,6 +149,15 @@
 								<img ng-src="{{trackImage}}" style="max-width: 100%" />
 							 </div>
 						 </div>
+					 </div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="form-group">
+						<label>Tyres</label>
+						<select multiple size="10" ng-model="selectedTyres" ng-options="tyre.value as tyre.description for tyre in tyres | orderBy: 'value'" class="form-control" ng-change="tyresChanged()">
+						</select>
 					 </div>
 				</div>
 			</div>
