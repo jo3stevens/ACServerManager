@@ -19,6 +19,9 @@ body {
 .bottom17 { margin-bottom:17px; }
 .bottom30 { margin-bottom:30px; }
 
+.left {float: left;}
+.right {float: right;}
+
 .alerts {
 	top: 51px;
 	left: 0px;

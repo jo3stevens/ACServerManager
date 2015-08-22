@@ -72,9 +72,17 @@ angular.module('acServerManager')
 			}
 		}
 	})
-	.controller('ServerCtrl', function ($scope, $filter, $timeout, CarService, TrackService, ServerService, BookService, PracticeService, QualifyService, RaceService, TyreService) {
+	.controller('ServerCtrl', function ($scope, $filter, $timeout, CarService, TrackService, ServerService, BookService, PracticeService, QualifyService, RaceService, TyreService, WeatherService) {
 		$scope.sessions = [];
 		$scope.alerts = [];
+		$scope.weatherSettings = [];
+		var newWeather = {
+			GRAPHICS: '3_clear',
+			BASE_TEMPERATURE_AMBIENT: '20',
+			BASE_TEMPERATURE_ROAD: '7',
+			VARIATION_AMBIENT: '2',
+			VARIATION_ROAD: '2'
+		};
 		
 		BookService.GetBookingDetails(function (data) {
 			$scope.sessions.push({
@@ -157,6 +165,18 @@ angular.module('acServerManager')
 			$scope.carsChanged();
 			$scope.trackChanged();
 		});
+		
+		WeatherService.GetWeather(function (data) {
+			$scope.weatherSettings = data;
+		});
+		
+		$scope.removeWeather = function(index) {
+			$scope.weatherSettings.splice(index, 1);
+		};
+		
+		$scope.addWeather = function() {
+			$scope.weatherSettings.push(angular.copy(newWeather));
+		};
 		
 		$scope.carsChanged = function() {
 			if ($scope.selectedCars.length == 0) {
@@ -336,6 +356,12 @@ angular.module('acServerManager')
 					}
 				});
 			}
+			
+			WeatherService.SaveWeather($scope.weatherSettings, function(result) {
+				if (!(result[0] === 'O' && result[1] === 'K')) {
+					saved = false;
+				}
+			});
 			
 			if (saved) {
 				createAlert('success', 'Saved successfully', true);

@@ -450,6 +450,48 @@ app.post('/api/dynamictrack/:id', function(req, res) {
 	}
 });
 
+//api/weather
+app.get('/api/weather', function(req, res) {
+	try {
+		var weather = [];
+		
+		Object.keys(config).forEach(function(key) {
+			if (key.indexOf("WEATHER_") === 0) {
+				weather.push(config[key]);  
+			}
+		});
+		
+		res.status(200);
+		res.send(weather);
+	}catch(e) {
+		console.log('Error: GET/api/weather - ' + e);
+		res.status(500);
+		res.send('Application error');
+	}
+});
+
+app.post('/api/weather', function(req, res) {
+	try {
+		Object.keys(config).forEach(function(key) {
+			if (key.indexOf("WEATHER_") === 0) {
+				delete config[key];  
+			}
+		});
+		
+		for(var param in req.body) {
+			config['WEATHER_' + param] = req.body[param];
+		}
+		
+		saveConfig();
+		res.status(200);
+		res.send('OK');		
+	}catch(e) {
+		console.log('Error: POST/api/weather - ' + e);
+		res.status(500);
+		res.send('Application error');
+	}
+});
+
 //api/tracks
 app.get('/api/tracks', function(req, res) {
 	try {
@@ -579,6 +621,7 @@ app.get('/api/entrylist', function(req, res) {
 app.post('/api/entrylist', function(req, res) {
 	try {
 		var newEntryList = {};
+		
 		for(var param in req.body) {
 			newEntryList[param.toUpperCase()] = req.body[param];
 		}

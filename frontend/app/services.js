@@ -152,6 +152,22 @@ angular.module('acServerManager.services', ['ngResource']).
 			}
         };
     }).
+	factory('WeatherService', function($resource) {
+        return {
+            GetWeather: function(callback) {
+                var resource = $resource('/api/weather');
+                var result = resource.query(function() {
+                    callback(result);
+                });
+            },
+			SaveWeather: function(data, callback) {
+				var resource = $resource('/api/weather');
+				var result = resource.save(data, function () {
+                    callback(result);
+                });
+			}
+        };
+    }).
 	factory('ProcessService', function($resource) {
         return {
             ACServerStatus: function(callback) {
