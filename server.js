@@ -15,6 +15,7 @@ var sTrackerPath = settings.sTrackerPath;
 var username = settings.username;
 var password = settings.password;
 
+var isRunningOnWindows = /^win/.test(process.platform);
 var acServerStatus = 0;
 var sTrackerServerStatus = 0;
 var acServerPid;
@@ -776,9 +777,18 @@ app.get('/api/acserver/status', function(req, res) {
 
 app.post('/api/acserver', function(req, res) {
 	try {
-		var acServer = childProcess.spawn('acServer.exe', { cwd: serverPath });
+                console.log("OS is " + process.platform);
+		var acServer = undefined;
+
+		if (isRunningOnWindows) {
+                    console.log("Starting Windows Server");
+                    acServer = childProcess.spawn('acServer.exe', { cwd: serverPath });
+		} else {
+                    console.log("Starting Linux Server");
+                    acServer = childProcess.spawn('./acServer', { cwd: serverPath });
+                }
 		acServerPid = acServer.pid;
-		acServerLogName = getDateTimeString() + '.txt';
+		acServerLogName = getDateTimeString() + '_log.txt';
 		
 		acServer.stdout.on('data', function(data) {
 			if (acServerStatus === 0) {
@@ -828,9 +838,16 @@ app.post('/api/acserver', function(req, res) {
 app.post('/api/acserver/stop', function(req, res) {
 	try {
 		if (acServerPid) {
-			childProcess.spawn("taskkill", ["/pid", acServerPid, '/f', '/t']);
-			acServerPid = undefined;
-			acServerLogName = undefined;
+                    if (isRunningOnWindows) {
+                         console.log("Stopping Windows Server");
+			 childProcess.spawn("taskkill", ["/pid", acServerPid, '/f', '/t']);
+                    } else {
+                         console.log("Stopping Linux Server");
+                         childProcess.spawn("kill", [acServerPid]);
+                    }
+
+        	    acServerPid = undefined;
+	            acServerLogName = undefined;
 		}
 		
 		res.status(200);
