@@ -4,7 +4,7 @@ Web based server manager for Assetto Corsa directly manipulating the ini files o
 Start and stop the server, and stracker directly from the application, meaning you can make changes to the server configuration and restart the server directly from your browser or mobile phone.
 
 ##Updates
-22/08/2014 - Finished adding all the new settings from 1.2 including tyres and weather
+22/08/2015 - Finished adding all the new settings from 1.2 including tyres and weather
 
 ##Installation
 ###Prep
