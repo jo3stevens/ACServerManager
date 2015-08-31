@@ -8,6 +8,9 @@ Start and stop the server, and stracker directly from the application, meaning y
 
 ##Installation
 ###Prep
+
+31/08/2015: NOTE: If you've been using the new windows server manager that came with 1.2 then you may not need this step as when you package the server files it does the same thing.
+
 The application needs some additional files added to the server/content/tracks and server/content/cars folders to be able to choose track configurations and car skins.
 
 Copy acServerManager.bat to your root aessettocorsa folder and run it to copy the required folders into server/content/*. You'll then need to copy the content folder to your server.
