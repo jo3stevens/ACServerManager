@@ -253,7 +253,7 @@ angular.module('acServerManager')
 			if (track !== null) {
 				if (track.configs && track.configs.length) {
 					$scope.configs = track.configs;
-					$scope.server.CONFIG_TRACK = $scope.server.CONFIG_TRACK === '' ? $scope.configs[0] : $scope.server.CONFIG_TRACK;
+					$scope.server.CONFIG_TRACK = $scope.configs[0];
 					
 					TrackService.GetTrackDetails(track.name, $scope.server.CONFIG_TRACK, function(data) {
 						$scope.trackDetails = data;
