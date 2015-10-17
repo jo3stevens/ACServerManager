@@ -498,6 +498,9 @@ angular.module('acServerManager')
 		
 		ServerService.GetServerDetails(function (data) {		
 			$scope.server = data;
+			if (!$scope.server.MAX_BALLAST_KG) {
+				$scope.server.MAX_BALLAST_KG = 100;
+			}
 		});
 		
 		$scope.submit = function() {
@@ -506,6 +509,10 @@ angular.module('acServerManager')
 			if ($scope.form.$invalid) { 
 				createAlert('warning', 'There are errors on the form', true);
 				return; 
+			}
+			
+			if (!$scope.server.UDP_PLUGIN_LOCAL_PORT) {
+				$scope.server.UDP_PLUGIN_LOCAL_PORT = '';
 			}
 			
 			ServerService.SaveServerDetails($scope.server, function(result) {

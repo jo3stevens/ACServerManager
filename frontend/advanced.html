@@ -87,7 +87,6 @@
 				<div class="col-sm-4">
 					<div class="form-group" show-errors>
 						<label>Blacklist Mode</label>
-						<!-- <input class="form-control" name="blacklist_mode" ng-model="server.BLACKLIST_MODE" required> -->
 						<select class="form-control" name="blacklist_mode" ng-model="server.BLACKLIST_MODE">
 							<option value="0">Kick Player</option>
 							<option value="1">Ban Until Restart</option>
@@ -102,6 +101,39 @@
 					 </div>
 				</div>
 			</div>
+			
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="form-group" show-errors>
+						<label>Max Ballast (Kg)</label>
+						<input class="form-control" type="number" min="0" name="max_ballast" ng-model="server.MAX_BALLAST_KG" required>
+					 </div>
+				</div>
+			</div>
+			
+			<fieldset class="top10">
+				<legend>Plugin</legend>
+				<div class="row">
+					<div class="col-sm-4">
+						<div class="form-group" show-errors>
+							<label>UDP Local Port</label>
+							<input class="form-control" type="number" min="0" name="udp_local_port" ng-model="server.UDP_PLUGIN_LOCAL_PORT">
+						 </div>
+					</div>
+					<div class="col-sm-4">
+						<div class="form-group" show-errors>
+							<label>UDP Address</label>
+							<input class="form-control" name="udp_address" ng-model="server.UDP_PLUGIN_ADDRESS">
+						 </div>
+					</div>
+					<div class="col-sm-4">
+						<div class="form-group" show-errors>
+							<label>Auth Address</label>
+							<input class="form-control" name="udp_local_port" ng-model="server.AUTH_PLUGIN_ADDRESS">
+						 </div>
+					</div>
+				</div>
+			</fieldset>
 			
 			<div class="row top30 bottom30">
 				<div class="col-sm-6">
