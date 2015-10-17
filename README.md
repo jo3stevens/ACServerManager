@@ -4,7 +4,13 @@ Web based server manager for Assetto Corsa directly manipulating the ini files o
 Start and stop the server, and stracker directly from the application, meaning you can make changes to the server configuration and restart the server directly from your browser or mobile phone.
 
 ##Updates
-22/08/2015 - Finished adding all the new settings from 1.2 including tyres and weather
+17/10/2015:
+Bug fix when switching between two tracks with multiple track configs
+Added Max Ballast and UDP Plugin fields to Advanced page
+Added new setting for contentPath allowing server and content folders to be seperated (this happens when using a manager package from the kunos tool). If this setting it left empty it will assume the content folder is inside the server folder
+
+22/08/2015:
+Finished adding all the new settings from 1.2 including tyres and weather
 
 ##Installation
 ###Prep
