@@ -1,0 +1,291 @@
+	<div class="alerts">
+		<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+	</div>
+	
+  <div class="starter-template">
+	<h1>Server Configuration</h1>
+  </div>
+  
+  <form ng-submit="submit()" name="form" data-toggle="validator">
+	<fieldset>
+		<legend>Basic Details</legend>
+		
+		  <div class="row">
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>Server Name</label>
+					<input class="form-control" name="name" ng-model="server.NAME" required>
+				 </div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label>Server Password</label>
+					<input type="password" class="form-control" ng-model="server.PASSWORD">
+				 </div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label>Admin Password</label>
+					<input type="password" class="form-control" ng-model="server.ADMIN_PASSWORD">
+				 </div>
+			</div>
+		</div>
+	</fieldset>
+	
+	<fieldset class="top10">
+		<legend>Ports</legend>
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>UDP Port</label>
+					<input class="form-control" name="udp_port" ng-model="server.UDP_PORT" required>
+				 </div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>TPC Port</label>
+					<input class="form-control" name="tcp_port" ng-model="server.TCP_PORT" required>
+				 </div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>HTTP Port</label>
+					<input class="form-control" name="http_port" ng-model="server.HTTP_PORT" required>
+				 </div>
+			</div>
+		</div>
+	</fieldset>
+	
+	<fieldset class="top10">
+		<legend>Cars and Tracks</legend>
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="form-group">
+					<label>Cars</label>
+					<select multiple size="10" class="form-control" ng-model="selectedCars" ng-options="car as car for car in cars" ng-change="carsChanged()">
+					</select>
+				 </div>
+			</div>
+			<div class="col-sm-6">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="form-group">
+							<label>Tracks</label>
+							<select class="form-control" ng-model="selectedTracks" ng-options="track.name as track.name for track in tracks" ng-change="trackChanged()">
+							</select>
+						 </div>
+					 </div>
+				 </div>
+				 <div class="row" ng-show="configs">
+					<div class="col-sm-12">
+						<div class="form-group">
+							<label>Configuration</label>
+							<select class="form-control" ng-model="server.CONFIG_TRACK" ng-options="config as config for config in configs">
+							</select>
+						</div>
+					 </div>
+				 </div>
+				 <div class="row">
+					<div class="col-sm-12">
+						<div class="col-sm-6">
+							<div ng-show="trackDetails">
+								<p>Description: <span>{{trackDetails.description}}</span><p>
+								<p>Country: <span>{{trackDetails.country}}</span><p>
+								<p>City: <span>{{trackDetails.city}}</span><p>
+								<p>Pit Boxes: <span>{{trackDetails.pitboxes}}</span><p>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<img ng-src="{{trackImage}}" style="max-width: 100%" />
+						 </div>
+					 </div>
+				 </div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="form-group">
+					<label>Tyres</label>
+					<select multiple size="10" ng-model="selectedTyres" ng-options="tyre.value as tyre.description for tyre in tyres | orderBy: 'value'" class="form-control" ng-change="tyresChanged()">
+					</select>
+				 </div>
+			</div>
+		</div>
+	</fieldset>
+	
+	<fieldset class="top10">
+		<legend>Session Details</legend>
+		<div class="row">
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label>Sessions</label>
+					<select class="form-control" ng-model="selectedSession" ng-options="session as session.type for session in sessions">
+					</select>
+				</div>
+			</div>
+			<div class="col-sm-2">
+			<label></label>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" ng-model="selectedSession.enabled"> Enabled
+					</label>
+				</div>
+			</div>
+			<div class="col-sm-8" ng-show="selectedSession.enabled">
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label>Name</label>
+						<input class="form-control" name="session_name" ng-model="selectedSession.data.NAME">
+					</div>						
+				</div>
+				<div class="col-sm-3" ng-hide="selectedSession.hideTime">
+					<div class="form-group">
+						<label>Time</label>
+						<input class="form-control" name="session_time" ng-model="selectedSession.data.TIME">
+					</div>						
+				</div>
+				<div class="col-sm-3" ng-hide="selectedSession.hideLaps">
+					<div class="form-group">
+						<label>Laps</label>
+						<input class="form-control" name="session_laps" ng-model="selectedSession.data.LAPS">
+					</div>						
+				</div>
+				<div class="col-sm-3" ng-hide="selectedSession.hideWaitTime">
+					<div class="form-group">
+						<label>Wait Time</label>
+						<input class="form-control" name="session_wait_time" ng-model="selectedSession.data.WAIT_TIME">
+					</div>						
+				</div>
+				<div class="col-sm-3" ng-hide="selectedSession.hideJoinType">
+					<div class="form-group">
+						<label>Join Type</label>
+						<select class="form-control" ng-model="selectedSession.data.IS_OPEN">
+							<option value="0">Close</option>
+							<option value="1">Open</option>
+							<option value="2">Close at start</option>
+						</select>
+					</div>						
+				</div>
+				<div class="col-sm-3" ng-hide="selectedSession.hideCanJoin">
+					<div class="checkbox top30">
+						<label>
+							<input type="checkbox" ng-model="selectedSession.data.IS_OPEN"> Can Join
+						</label>
+					</div>						
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-2">
+				<div class="form-group">
+					<label>Race Over Time</label>
+					<input class="form-control" name="session_race_over_time" ng-model="server.RACE_OVER_TIME">
+				</div>						
+			</div>
+		</div>
+	</fieldset>
+	
+	<fieldset class="top10">
+		<legend>Other Options</legend>
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>Time (hh)</label>
+					<input class="form-control" name="hours" ng-model="hours" required>
+				</div>						
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>(mm)</label>
+					<input class="form-control" name="mins" ng-model="mins" required>
+				</div>	
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>Max Clients</label>
+					<input class="form-control" name="max_clients" ng-model="server.MAX_CLIENTS" required>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-sm-2">
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" ng-model="server.LOOP_MODE"> Loop Session
+					</label>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" ng-model="server.PICKUP_MODE_ENABLED"> Pickup Mode Enabled
+					</label>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" ng-model="server.REGISTER_TO_LOBBY"> Show on Lobby
+					</label>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+	
+	<fieldset class="top10">
+		<legend>Weather</legend>
+		<div class="row">
+			<div class="col-sm-12">
+				<button type="button" class="btn btn-default" ng-click="addWeather()">Add Weather</button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-3" ng-repeat="weather in weatherSettings">
+				<div>
+					<h4>
+						{{$index + 1}}
+						<a href="javascript:void(0);" ng-click="removeWeather($index)" title="Remove"><span class="glyphicon glyphicon-remove right" aria-hidden="true"></span></a>
+					</h4>
+				</div>
+				<div class="form-group">
+					<label>Graphics</label>
+					<select class="form-control" ng-model="weather.GRAPHICS">
+						<option value="3_clear">Clear</option>
+						<option value="7_heavy_clouds">Heavy Clouds</option>
+						<option value="1_heavy_fog">Heavy Fog</option>
+						<option value="5_light_clouds">Light Clouds</option>
+						<option value="2_light_fog">Light Fog</option>
+						<option value="4_mid_clear">Mid Clear</option>
+						<option value="6_mid_clouds">Mid Clouds</option>
+						
+					</select>
+					
+				</div>
+				<div class="form-group" show-errors>
+					<label>Base Ambient Temp</label>
+					<input class="form-control" type="number" string-to-number name="base_temperature_ambient" ng-model="weather.BASE_TEMPERATURE_AMBIENT" required>
+				</div>
+				<div class="form-group" show-errors>
+					<label>Base Road Temp</label>
+					<input class="form-control" type="number" string-to-number name="base_temperature_road" ng-model="weather.BASE_TEMPERATURE_ROAD" required>
+				</div>
+				<div class="form-group" show-errors>
+					<label>Ambient Variation</label>
+					<input class="form-control" type="number" string-to-number name="ambient_variation" ng-model="weather.VARIATION_AMBIENT" required>
+				</div>
+				<div class="form-group" show-errors>
+					<label>Road Variation</label>
+					<input class="form-control" type="number" string-to-number name="road_variation" ng-model="weather.VARIATION_ROAD" required>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+
+	<div class="row top30 bottom30">
+		<div class="col-sm-6">
+			<button type="submit" class="btn btn-primary">Save Changes</button>
+		</div>
+	</div>
+  
+  </form>

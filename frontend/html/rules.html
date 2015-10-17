@@ -1,0 +1,144 @@
+<div class="alerts">
+	<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+</div>
+
+<div class="starter-template">
+<h1>Rules</h1>
+</div>
+
+<form ng-submit="submit()" name="form" data-toggle="validator">
+	<fieldset>
+		<legend>Assist Rules</legend>
+		
+		  <div class="row">
+			<div class="col-sm-6">
+				<div class="form-group">
+					<label>ABS</label>
+					<select class="form-control" ng-model="server.ABS_ALLOWED" ng-options="assistOption.value as assistOption.name for assistOption in assistOptions">
+					</select>
+				 </div>
+			</div>
+			<div class="col-sm-6">
+				<div class="form-group">
+					<label>Traction Control</label>
+					<select class="form-control" ng-model="server.TC_ALLOWED" ng-options="assistOption.value as assistOption.name for assistOption in assistOptions">
+					</select>
+				 </div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-2">
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" ng-model="server.AUTOCLUTCH_ALLOWED"> Allow Auto Clutch
+					</label>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" ng-model="server.STABILITY_ALLOWED"> Allow Stability Control
+					</label>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" ng-model="server.TYRE_BLANKETS_ALLOWED"> Allow Tyre Blankets
+					</label>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" ng-model="server.FORCE_VIRTUAL_MIRROR"> Force Virtual Mirror
+					</label>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+	
+	<fieldset class="top10">
+		<legend>Dynamic Track</legend>
+		
+		<div class="row">
+			<div class="col-sm-2">
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" ng-model="dynamicTrackEnabled"> Enabled
+					</label>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row" ng-show="dynamicTrackEnabled">
+			<div class="col-sm-3">
+				<div class="form-group" show-errors>
+					<label>Lap Gain</label>
+					<input class="form-control" name="lap_gain" ng-model="dynamicTrack.LAP_GAIN" ng-required="dynamicTrackEnabled">
+				 </div>
+			</div>
+			<div class="col-sm-3">
+				<div class="form-group" show-errors>
+					<label>Randomness</label>
+					<input class="form-control" name="randomness" ng-model="dynamicTrack.RANDOMNESS" ng-required="dynamicTrackEnabled">
+				 </div>
+			</div>
+			<div class="col-sm-3">
+				<div class="form-group" show-errors>
+					<label>Session Start Grip</label>
+					<input class="form-control" name="session_start" ng-model="dynamicTrack.SESSION_START" ng-required="dynamicTrackEnabled">
+				 </div>
+			</div>
+			<div class="col-sm-3">
+				<div class="form-group" show-errors>
+					<label>Session Transfer</label>
+					<input class="form-control" name="session_transfer" ng-model="dynamicTrack.SESSION_TRANSFER" ng-required="dynamicTrackEnabled">
+				 </div>
+			</div>
+		</div>
+	</fieldset>
+	
+	<fieldset class="top10">
+		<legend>Racing Rules</legend>
+					
+		<div class="row">
+			<div class="col-sm-3">
+				<div class="form-group">
+					<label>Allowed Tyres Out</label>
+					<select class="form-control" ng-model="server.ALLOWED_TYRES_OUT">
+						<option value="0">0</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="5">5</option>
+					</select>
+				 </div>
+			</div>
+			<div class="col-sm-3">
+				<div class="form-group" show-errors>
+					<label>Damage Multiplier</label>
+					<input class="form-control" name="damage_multiplier" ng-model="server.DAMAGE_MULTIPLIER" required>
+				 </div>
+			</div>
+			<div class="col-sm-3">
+				<div class="form-group" show-errors>
+					<label>Fuel Rate</label>
+					<input class="form-control" name="fuel_rate" ng-model="server.FUEL_RATE" required>
+				 </div>
+			</div>
+			<div class="col-sm-3">
+				<div class="form-group" show-errors>
+					<label>Tyre Wear Rate</label>
+					<input class="form-control" name="tyre_wear_rate" ng-model="server.TYRE_WEAR_RATE" required>
+				 </div>
+			</div>
+		</div>
+	</fieldset>
+	
+	<div class="row top30 bottom30">
+		<div class="col-sm-6">
+			<button type="input" class="btn btn-primary">Save Changes</button>
+		</div>
+	</div>
+</form>

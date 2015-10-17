@@ -1,0 +1,51 @@
+  <div class="starter-template">
+	<h1>Status</h1>
+  </div>
+  
+  <form>
+	<fieldset>
+		<legend>Assetto Corsa Server</legend>
+		
+		  <div class="row">
+			<div class="col-sm-2">
+				<p class="lead" ng-class="acServerStatus ? 'bg-success' : 'bg-danger'">{{acServerStatus === 1 ? 'Running' : acServerStatus === 0 ? 'Stopped' : 'Loading'}}</p>
+			</div>
+			<div class="col-sm-2">
+				<button type="button" class="btn btn-default" ng-show="acServerStatus === 0" ng-click="startACServer()">
+					<span class="glyphicon glyphicon-play" aria-hidden="true"></span> Start
+				</button>
+				<button type="button" class="btn btn-default" ng-show="acServerStatus === 1" ng-click="stopACServer()">
+					<span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Stop
+				</button>
+				<img src="/img/ajax-loader.gif" alt="Loading" ng-show="acServerStatus === -1" />
+			</div>
+		</div>
+	</fieldset>
+	
+	<fieldset class="top10" ng-hide="sTrackerServerStatus === -2">
+		<legend>sTracker Server</legend>
+		<div class="row">
+			<div class="col-sm-2">
+				<p class="lead" ng-class="sTrackerServerStatus ? 'bg-success' : 'bg-danger'">{{sTrackerServerStatus === 1 ? 'Running' : acServerStatus === 0 ? 'Stopped' : 'Loading'}}</p>
+			</div>
+			<div class="col-sm-2">
+				<button type="button" class="btn btn-default" ng-show="sTrackerServerStatus === 0 && acServerStatus === 1" ng-click="startSTrackerServer()">
+					<span class="glyphicon glyphicon-play" aria-hidden="true"></span> Start
+				</button>
+				<button type="button" class="btn btn-default" ng-show="sTrackerServerStatus === 1" ng-click="stopSTrackerServer()">
+					<span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Stop
+				</button>
+				<img src="/img/ajax-loader.gif" alt="Loading" ng-show="sTrackerServerStatus === -1" />
+			</div>
+		</div>
+	</fieldset>
+	
+	<fieldset class="top10" ng-show="acServerStatus === 1">
+		<legend>Server Status</legend>
+		<div class="row">
+			<div class="col-sm-12">
+				<p>Current Session: {{serverStatus.session}}</p>
+			</div>
+		</div>
+	</fieldset>  
+  </form>

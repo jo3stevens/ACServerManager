@@ -1,0 +1,93 @@
+<div class="alerts">
+	<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+</div>
+
+<div class="starter-template">
+<h1>Advanced</h1>
+</div>
+<form ng-submit="submit()" name="form" data-toggle="validator">
+	<div class="row">
+		<div class="col-sm-4">
+			<div class="form-group" show-errors>
+				<label>Sleep Time</label>
+				<input class="form-control" name="sleep_time" ng-model="server.SLEEP_TIME" required>
+			 </div>
+		</div>
+		<div class="col-sm-4">
+			<div class="form-group" show-errors>
+				<label>Voting Quorum</label>
+				<input class="form-control" name="voting_quorum" ng-model="server.VOTING_QUORUM" required>
+			 </div>
+		</div>
+		<div class="col-sm-4">
+			<div class="form-group" show-errors>
+				<label>Voting Duration</label>
+				<input class="form-control" name="vote_duration" ng-model="server.VOTE_DURATION" required>
+			 </div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-sm-4">
+			<div class="form-group" show-errors>
+				<label>Kick Vote Quorum</label>
+				<input class="form-control" name="kick_vote_quorum" ng-model="server.KICK_QUORUM" required>
+			 </div>
+		</div>
+		<div class="col-sm-4">
+			<div class="form-group" show-errors>
+				<label>Blacklist Mode</label>
+				<select class="form-control" name="blacklist_mode" ng-model="server.BLACKLIST_MODE">
+					<option value="0">Kick Player</option>
+					<option value="1">Ban Until Restart</option>
+					<option value="2">Ban and Forget</option>
+				</select>
+			 </div>
+		</div>
+		<div class="col-sm-4">
+			<div class="form-group" show-errors>
+				<label>Client Send Interval (hz)</label>
+				<input class="form-control" name="client_send_interval_hz" ng-model="server.CLIENT_SEND_INTERVAL_HZ" required>
+			 </div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-sm-4">
+			<div class="form-group" show-errors>
+				<label>Max Ballast (Kg)</label>
+				<input class="form-control" type="number" string-to-number min="0" name="max_ballast" ng-model="server.MAX_BALLAST_KG" required>
+			 </div>
+		</div>
+	</div>
+	
+	<fieldset class="top10">
+		<legend>Plugin</legend>
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>UDP Local Port</label>
+					<input class="form-control" type="number" string-to-number min="0" name="udp_local_port" ng-model="server.UDP_PLUGIN_LOCAL_PORT">
+				 </div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>UDP Address</label>
+					<input class="form-control" name="udp_address" ng-model="server.UDP_PLUGIN_ADDRESS">
+				 </div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group" show-errors>
+					<label>Auth Address</label>
+					<input class="form-control" name="udp_local_port" ng-model="server.AUTH_PLUGIN_ADDRESS">
+				 </div>
+			</div>
+		</div>
+	</fieldset>
+	
+	<div class="row top30 bottom30">
+		<div class="col-sm-6">
+			<button type="submit" class="btn btn-primary">Save Changes</button>
+		</div>
+	</div>
+</form>

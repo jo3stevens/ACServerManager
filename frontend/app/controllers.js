@@ -1,7 +1,11 @@
 'use strict';
 
 angular.module('acServerManager')
-	.controller('StatusCtrl', function($scope, $timeout, ProcessService, ServerService) {
+	.controller('StatusCtrl', function($scope, $timeout, $location, ProcessService, ServerService) {
+		$scope.isActive = function (viewLocation) { 
+			return viewLocation === $location.path();
+		};
+		
 		$scope.alerts = [];
 		
 		(function getACServerStatus() {
@@ -72,7 +76,11 @@ angular.module('acServerManager')
 			}
 		}
 	})
-	.controller('ServerCtrl', function ($scope, $filter, $timeout, CarService, TrackService, ServerService, BookService, PracticeService, QualifyService, RaceService, TyreService, WeatherService) {
+	.controller('ServerCtrl', function ($scope, $filter, $timeout, $location, CarService, TrackService, ServerService, BookService, PracticeService, QualifyService, RaceService, TyreService, WeatherService) {
+		$scope.isActive = function (viewLocation) { 
+			return viewLocation === $location.path();
+		};
+		
 		$scope.sessions = [];
 		$scope.alerts = [];
 		$scope.weatherSettings = [];
@@ -411,7 +419,11 @@ angular.module('acServerManager')
 			return null;
 		}
 	})
-	.controller('RulesCtrl', function($scope, $timeout, ServerService, DynamicTrackService) {
+	.controller('RulesCtrl', function($scope, $timeout, $location, ServerService, DynamicTrackService) {
+		$scope.isActive = function (viewLocation) { 
+			return viewLocation === $location.path();
+		};
+		
 		$scope.alerts = [];
 		
 		$scope.assistOptions = [
@@ -493,7 +505,11 @@ angular.module('acServerManager')
 			}
 		}
 	})
-	.controller('AdvancedCtrl', function($scope, $timeout, ServerService) {	
+	.controller('AdvancedCtrl', function($scope, $timeout, $location, ServerService) {	
+		$scope.isActive = function (viewLocation) { 
+			return viewLocation === $location.path();
+		};
+		
 		$scope.alerts = [];
 		
 		ServerService.GetServerDetails(function (data) {		
@@ -534,7 +550,11 @@ angular.module('acServerManager')
 			}
 		}
 	})
-	.controller('EntryListCtrl', function($scope, $timeout, $filter, ServerService, CarService, EntryListService, DriverService) {	
+	.controller('EntryListCtrl', function($scope, $timeout, $filter, $location, ServerService, CarService, EntryListService, DriverService) {	
+		$scope.isActive = function (viewLocation) { 
+			return viewLocation === $location.path();
+		};
+		
 		$scope.alerts = [];
 		$scope.entryList = [];
 		$scope.drivers =[];
