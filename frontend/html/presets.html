@@ -1,0 +1,16 @@
+<form class="navbar-form navbar-right">
+	<div class="input-group">
+		<input type="text" ng-model="currentPreset" class="form-control" placeholder="Presets">
+		<div class="input-group-btn">
+			<button type="button" class="btn btn-default" ng-click="loadPreset()">Load</button>
+			<button type="button" class="btn btn-default" ng-click="savePreset()">Save</button>
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			  <span class="caret"></span>
+			  <span class="sr-only">Toggle Dropdown</span>
+			</button>
+			<ul class="dropdown-menu dropdown-menu-right">
+			  <li ng-repeat="preset in presets"><a ng-click="presetSelected(preset);" href="javascript:void(0)">{{preset}}</a></li>
+			</ul>
+		</div>
+	</div>
+</form>

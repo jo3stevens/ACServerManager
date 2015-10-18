@@ -28,8 +28,6 @@ var acServerPid;
 var sTrackerServerPid;
 var acServerLogName;
 
-var currentSession;
-
 var config = ini.parse(fs.readFileSync(serverPath + 'cfg/server_cfg.ini', 'utf-8'))
 var entryList = ini.parse(fs.readFileSync(serverPath + 'cfg/entry_list.ini', 'utf-8'))
 var ksTyres = ini.parse(fs.readFileSync(serverPath + 'manager/ks_tyres.ini', 'utf-8'))
@@ -544,7 +542,7 @@ app.get('/api/tracks/:track', function(req, res) {
 
 app.get('/api/tracks/:track/image', function(req, res) {
 	try {
-		res.status(200);;
+		res.status(200);
 		var image = fs.readFileSync(contentPath + '/tracks/' + req.params.track + '/ui/preview.png');
 		res.contentType('image/jpeg');
 		res.send(image);	
@@ -766,6 +764,71 @@ app.get('/api/tyres', function(req, res) {
 		console.log("Failed to retrieve tyres");
 		res.status(500);
 		res.send("Failed to retrieve tyres");
+	}
+});
+
+//api/presets
+app.get('/api/presets', function(req, res) {
+	try {
+		var presets = fs.readdirSync(serverPath + "/presets");
+		res.status(200);
+		res.send(presets);
+	}catch(e) {
+		console.log('Error: GET/api/presets - ' + e);
+		res.status(500);
+		res.send('Application error');
+	}
+});
+
+app.get('/api/presets/:preset', function(req, res) {
+	try {	
+		var preset = req.params.preset;
+		var exists = fs.existsSync(serverPath + '/presets/' + preset);
+		
+		if (exists) {
+			config = ini.parse(fs.readFileSync(serverPath + '/presets/' + preset + '/server_cfg.ini', 'utf-8'));
+			entryList = ini.parse(fs.readFileSync(serverPath + '/presets/' + preset + '/entry_list.ini', 'utf-8'));
+			
+			saveConfig();
+			saveEntryList();
+			
+			res.status(200);
+			res.send("OK");
+		}
+		else {
+			res.status(200);
+			res.send("Invalid preset");
+		}
+		
+	}catch(e) {
+		console.log('Error: GET/api/presets/:preset - ' + e);
+		res.status(500);
+		res.send('Application error');
+	}
+});
+
+app.post('/api/presets', function(req, res) {
+	try {
+		var preset = req.body['preset'];
+		if (!preset) {
+			throw "Preset name not provided";
+		}
+		
+		var presetFolder = serverPath + '/presets/' + preset;
+		if (!fs.existsSync(presetFolder)){
+			fs.mkdirSync(presetFolder);
+		}
+		
+		fs.writeFileSync(presetFolder + '/server_cfg.ini', ini.stringify(config));
+		fs.writeFileSync(presetFolder + '/entry_list.ini', ini.stringify(entryList));
+		
+		res.status(200);
+		res.send('OK');
+	}
+	catch(e) {
+		console.log('Error: POST/api/presets - ' + e);
+		res.status(500);
+		res.send("Failed to save preset");
 	}
 });
 

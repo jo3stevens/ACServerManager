@@ -255,4 +255,26 @@ angular.module('acServerManager.services', ['ngResource']).
                 });
             }
         };
+    }).
+	factory('PresetService', function($resource) {
+        return {
+            GetPresets: function(callback) {
+                var resource = $resource('/api/presets');
+                var result = resource.query(function() {
+                    callback(result);
+                });
+            },
+			LoadPreset: function(preset, callback) {
+                var resource = $resource('/api/presets/:preset');
+                var result = resource.get({preset: preset}, function() {
+                    callback(result);
+                });
+            },
+			SavePreset: function(preset, callback) {
+                var resource = $resource('/api/presets');
+                var result = resource.save({preset: preset}, function() {
+                    callback(result);
+                });
+            }
+        };
     });

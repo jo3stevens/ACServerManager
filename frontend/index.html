@@ -45,23 +45,7 @@
             <li ng-class="{ active: isActive('/rules')}"><a href="/rules">Rules</a></li>
 			<li ng-class="{ active: isActive('/advanced')}"><a href="/advanced">Advanced</a></li>
           </ul>
-		  <form class="navbar-form navbar-right">
-            <div class="input-group">
-				<input type="text" class="form-control" placeholder="Presets">
-				<div class="input-group-btn">
-					<button type="button" class="btn btn-default">Load</button>
-					<button type="button" class="btn btn-default">Save</button>
-					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					  <span class="caret"></span>
-					  <span class="sr-only">Toggle Dropdown</span>
-					</button>
-					<ul class="dropdown-menu dropdown-menu-right">
-					  <li><a href="#">Preset 1</a></li>
-					  <li><a href="#">Preset 2</a></li>
-					</ul>
-				</div>
-			</div>
-          </form>
+		  <div presets />
         </div><!--/.nav-collapse -->
       </div>
     </nav>
@@ -82,6 +66,7 @@
 	<script src="/js/angular/ui-bootstrap-tpls-0.13.0.min.js"></script>
 	<script src="/js/angular/show-errors.min.js"></script>
 	<script src="/app/app.js"></script>
+	<script src="/app/directives.js"></script>
 	<script src="/app/services.js"></script>
 	<script src="/app/controllers.js"></script>
   </body>

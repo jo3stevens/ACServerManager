@@ -76,10 +76,28 @@ angular.module('acServerManager')
 			}
 		}
 	})
-	.controller('ServerCtrl', function ($scope, $filter, $timeout, $location, CarService, TrackService, ServerService, BookService, PracticeService, QualifyService, RaceService, TyreService, WeatherService) {
+	.controller('ServerCtrl', function ($scope, $rootScope, $filter, $timeout, $location, CarService, TrackService, ServerService, BookService, PracticeService, QualifyService, RaceService, TyreService, WeatherService) {
 		$scope.isActive = function (viewLocation) { 
 			return viewLocation === $location.path();
 		};
+		
+		$rootScope.$on('presetLoaded', function(event, success) {
+			if (success) {
+				loadData();
+				createAlert('success', 'Preset loaded', true);
+			} else {
+				createAlert('danger', 'Failed to load preset', true);
+			}
+		});
+		
+		$rootScope.$on('presetSaved', function(event, success) {
+			if (success) {
+				loadData();
+				createAlert('success', 'Preset saved', true);
+			} else {
+				createAlert('danger', 'Failed to save preset', true);
+			}
+		});
 		
 		$scope.sessions = [];
 		$scope.alerts = [];
@@ -92,91 +110,95 @@ angular.module('acServerManager')
 			VARIATION_ROAD: '2'
 		};
 		
-		BookService.GetBookingDetails(function (data) {
-			$scope.sessions.push({
-				type: 'Booking',
-				hideTime: false,
-				hideLaps: true,
-				hideWaitTime: true,
-				hideCanJoin: true,
-				hideJoinType: true,
-				enabled: data.NAME !== undefined,
-				data: data
+		loadData();
+		
+		function loadData() {
+			BookService.GetBookingDetails(function (data) {
+				$scope.sessions.push({
+					type: 'Booking',
+					hideTime: false,
+					hideLaps: true,
+					hideWaitTime: true,
+					hideCanJoin: true,
+					hideJoinType: true,
+					enabled: data.NAME !== undefined,
+					data: data
+				});
+				$scope.selectedSession = $scope.sessions[0];
 			});
-			$scope.selectedSession = $scope.sessions[0];
-		});
-		
-		PracticeService.GetPracticeDetails(function (data) {
-			data.IS_OPEN = data.IS_OPEN == 1;
-			$scope.sessions.push({
-				type: 'Practice',
-				hideTime: false,
-				hideLaps: true,
-				hideWaitTime: false,
-				hideCanJoin: false,
-				hideJoinType: true,
-				enabled: data.NAME !== undefined,
-				data: data
+			
+			PracticeService.GetPracticeDetails(function (data) {
+				data.IS_OPEN = data.IS_OPEN == 1;
+				$scope.sessions.push({
+					type: 'Practice',
+					hideTime: false,
+					hideLaps: true,
+					hideWaitTime: false,
+					hideCanJoin: false,
+					hideJoinType: true,
+					enabled: data.NAME !== undefined,
+					data: data
+				});
 			});
-		});
-		
-		QualifyService.GetQualifyDetails(function (data) {
-			data.IS_OPEN = data.IS_OPEN == 1;
-			$scope.sessions.push({
-				type: 'Qualify',
-				hideTime: false,
-				hideLaps: true,
-				hideWaitTime: false,
-				hideCanJoin: false,
-				hideJoinType: true,
-				enabled: data.NAME !== undefined,
-				data: data
+			
+			QualifyService.GetQualifyDetails(function (data) {
+				data.IS_OPEN = data.IS_OPEN == 1;
+				$scope.sessions.push({
+					type: 'Qualify',
+					hideTime: false,
+					hideLaps: true,
+					hideWaitTime: false,
+					hideCanJoin: false,
+					hideJoinType: true,
+					enabled: data.NAME !== undefined,
+					data: data
+				});
 			});
-		});
-		
-		RaceService.GetRaceDetails(function (data) {
-			$scope.sessions.push({
-				type: 'Race',
-				hideTime: true,
-				hideLaps: false,
-				hideWaitTime: false,
-				hideCanJoin: true,
-				hideJoinType: false,
-				enabled: data.NAME !== undefined,
-				data: data
+			
+			RaceService.GetRaceDetails(function (data) {
+				$scope.sessions.push({
+					type: 'Race',
+					hideTime: true,
+					hideLaps: false,
+					hideWaitTime: false,
+					hideCanJoin: true,
+					hideJoinType: false,
+					enabled: data.NAME !== undefined,
+					data: data
+				});
 			});
-		});
-		
-		CarService.GetCars(function (data) {
-			$scope.cars = data;
-		});
-		
-		TrackService.GetTracks(function (data) {
-			$scope.tracks = data;
-		});
-		
-		ServerService.GetServerDetails(function (data) {
-			$scope.selectedCars = data.CARS.split(';');
-			$scope.selectedTracks = data.TRACK; //TODO: Multi-track
-			$scope.selectedTyres = data.LEGAL_TYRES.split(';');
 			
-			data.LOOP_MODE = data.LOOP_MODE == 1;
-			data.PICKUP_MODE_ENABLED = data.PICKUP_MODE_ENABLED == 1;
-			data.REGISTER_TO_LOBBY = data.REGISTER_TO_LOBBY == 1;
+			CarService.GetCars(function (data) {
+				$scope.cars = data;
+			});
 			
-			var time = getTime(data.SUN_ANGLE);
-			$scope.hours = time.getHours();
-			$scope.mins = time.getMinutes();
+			TrackService.GetTracks(function (data) {
+				$scope.tracks = data;
+			});
 			
-			$scope.server = data;
+			ServerService.GetServerDetails(function (data) {
+				$scope.selectedCars = data.CARS.split(';');
+				$scope.selectedTracks = data.TRACK; //TODO: Multi-track
+				$scope.selectedTyres = data.LEGAL_TYRES.split(';');
+				
+				data.LOOP_MODE = data.LOOP_MODE == 1;
+				data.PICKUP_MODE_ENABLED = data.PICKUP_MODE_ENABLED == 1;
+				data.REGISTER_TO_LOBBY = data.REGISTER_TO_LOBBY == 1;
+				
+				var time = getTime(data.SUN_ANGLE);
+				$scope.hours = time.getHours();
+				$scope.mins = time.getMinutes();
+				
+				$scope.server = data;
+				
+				$scope.carsChanged();
+				$scope.trackChanged();
+			});
 			
-			$scope.carsChanged();
-			$scope.trackChanged();
-		});
-		
-		WeatherService.GetWeather(function (data) {
-			$scope.weatherSettings = data;
-		});
+			WeatherService.GetWeather(function (data) {
+				$scope.weatherSettings = data;
+			});
+		}
 		
 		$scope.removeWeather = function(index) {
 			$scope.weatherSettings.splice(index, 1);
@@ -419,10 +441,28 @@ angular.module('acServerManager')
 			return null;
 		}
 	})
-	.controller('RulesCtrl', function($scope, $timeout, $location, ServerService, DynamicTrackService) {
+	.controller('RulesCtrl', function($scope, $rootScope, $timeout, $location, ServerService, DynamicTrackService) {
 		$scope.isActive = function (viewLocation) { 
 			return viewLocation === $location.path();
 		};
+		
+		$rootScope.$on('presetLoaded', function(event, success) {
+			if (success) {
+				loadData();
+				createAlert('success', 'Preset loaded', true);
+			} else {
+				createAlert('danger', 'Failed to load preset', true);
+			}
+		});
+		
+		$rootScope.$on('presetSaved', function(event, success) {
+			if (success) {
+				loadData();
+				createAlert('success', 'Preset saved', true);
+			} else {
+				createAlert('danger', 'Failed to save preset', true);
+			}
+		});
 		
 		$scope.alerts = [];
 		
@@ -441,19 +481,23 @@ angular.module('acServerManager')
 			}
 		];
 		
-		ServerService.GetServerDetails(function (data) {
-			data.AUTOCLUTCH_ALLOWED = data.AUTOCLUTCH_ALLOWED == 1;
-			data.STABILITY_ALLOWED = data.STABILITY_ALLOWED == 1;
-			data.TYRE_BLANKETS_ALLOWED = data.TYRE_BLANKETS_ALLOWED == 1;
-			data.FORCE_VIRTUAL_MIRROR = data.FORCE_VIRTUAL_MIRROR == 1;
-			
-			$scope.server = data;
-		});
+		loadData();
 		
-		DynamicTrackService.GetDynamicTrackDetails(function (data) {
-			$scope.dynamicTrackEnabled = data.LAP_GAIN !== undefined;
-			$scope.dynamicTrack = data;
-		});
+		function loadData() {
+			ServerService.GetServerDetails(function (data) {
+				data.AUTOCLUTCH_ALLOWED = data.AUTOCLUTCH_ALLOWED == 1;
+				data.STABILITY_ALLOWED = data.STABILITY_ALLOWED == 1;
+				data.TYRE_BLANKETS_ALLOWED = data.TYRE_BLANKETS_ALLOWED == 1;
+				data.FORCE_VIRTUAL_MIRROR = data.FORCE_VIRTUAL_MIRROR == 1;
+				
+				$scope.server = data;
+			});
+			
+			DynamicTrackService.GetDynamicTrackDetails(function (data) {
+				$scope.dynamicTrackEnabled = data.LAP_GAIN !== undefined;
+				$scope.dynamicTrack = data;
+			});			
+		}
 		
 		$scope.submit = function() {
 			$scope.$broadcast('show-errors-check-validity');
@@ -505,19 +549,41 @@ angular.module('acServerManager')
 			}
 		}
 	})
-	.controller('AdvancedCtrl', function($scope, $timeout, $location, ServerService) {	
+	.controller('AdvancedCtrl', function($scope, $rootScope, $timeout, $location, ServerService) {	
 		$scope.isActive = function (viewLocation) { 
 			return viewLocation === $location.path();
 		};
 		
-		$scope.alerts = [];
-		
-		ServerService.GetServerDetails(function (data) {		
-			$scope.server = data;
-			if (!$scope.server.MAX_BALLAST_KG) {
-				$scope.server.MAX_BALLAST_KG = 100;
+		$rootScope.$on('presetLoaded', function(event, success) {
+			if (success) {
+				loadData();
+				createAlert('success', 'Preset loaded', true);
+			} else {
+				createAlert('danger', 'Failed to load preset', true);
 			}
 		});
+		
+		$rootScope.$on('presetSaved', function(event, success) {
+			if (success) {
+				loadData();
+				createAlert('success', 'Preset saved', true);
+			} else {
+				createAlert('danger', 'Failed to save preset', true);
+			}
+		});
+		
+		$scope.alerts = [];
+		
+		loadData();
+		
+		function loadData() {
+			ServerService.GetServerDetails(function (data) {		
+				$scope.server = data;
+				if (!$scope.server.MAX_BALLAST_KG) {
+					$scope.server.MAX_BALLAST_KG = 100;
+				}
+			});			
+		}
 		
 		$scope.submit = function() {
 			$scope.$broadcast('show-errors-check-validity');
@@ -550,24 +616,28 @@ angular.module('acServerManager')
 			}
 		}
 	})
-	.controller('EntryListCtrl', function($scope, $timeout, $filter, $location, ServerService, CarService, EntryListService, DriverService) {	
+	.controller('EntryListCtrl', function($scope, $rootScope, $timeout, $filter, $location, ServerService, CarService, EntryListService, DriverService) {	
 		$scope.isActive = function (viewLocation) { 
 			return viewLocation === $location.path();
 		};
 		
-		$scope.alerts = [];
-		$scope.entryList = [];
-		$scope.drivers =[];
-		$scope.amount = 1;
-		$scope.newEntry = {
-			DRIVERNAME: '',
-			TEAM: '',
-			MODEL: '',
-			SKIN: '',
-			GUID: '',
-			SPECTATOR_MODE: '',
-			BALLAST: 0
-		};
+		$rootScope.$on('presetLoaded', function(event, success) {
+			if (success) {
+				loadData();
+				createAlert('success', 'Preset loaded', true);
+			} else {
+				createAlert('danger', 'Failed to load preset', true);
+			}
+		});
+		
+		$rootScope.$on('presetSaved', function(event, success) {
+			if (success) {
+				loadData();
+				createAlert('success', 'Preset saved', true);
+			} else {
+				createAlert('danger', 'Failed to save preset', true);
+			}
+		});
 		
 		$scope.$watchCollection('newEntry', function (newVal, oldVal) {
 			$scope.disableAmount = newVal.DRIVERNAME || newVal.TEAM || newVal.GUID
@@ -576,24 +646,42 @@ angular.module('acServerManager')
 			}
 		});
 		
-		ServerService.GetServerDetail('cars', function (data) {		
-			$scope.cars = data.value.split(';');
-			$scope.newEntry.MODEL = $scope.cars[0];
-			$scope.selectedCarChanged();
-		});
+		loadData();
 		
-		EntryListService.GetEntryList(function (data) {
-			angular.forEach(data, function(value, key) {
-				if (key.indexOf('CAR_') === 0) {
-					value.SPECTATOR_MODE = value.SPECTATOR_MODE == 1;
-					$scope.entryList.push(value);
-				}
+		function loadData() {
+			$scope.alerts = [];
+			$scope.entryList = [];
+			$scope.drivers =[];
+			$scope.amount = 1;
+			$scope.newEntry = {
+				DRIVERNAME: '',
+				TEAM: '',
+				MODEL: '',
+				SKIN: '',
+				GUID: '',
+				SPECTATOR_MODE: '',
+				BALLAST: 0
+			};
+		
+			ServerService.GetServerDetail('cars', function (data) {		
+				$scope.cars = data.value.split(';');
+				$scope.newEntry.MODEL = $scope.cars[0];
+				$scope.selectedCarChanged();
 			});
-		});
-		
-		DriverService.GetDrivers(function (data) {
-			$scope.drivers = data;
-		});
+			
+			EntryListService.GetEntryList(function (data) {
+				angular.forEach(data, function(value, key) {
+					if (key.indexOf('CAR_') === 0) {
+						value.SPECTATOR_MODE = value.SPECTATOR_MODE == 1;
+						$scope.entryList.push(value);
+					}
+				});
+			});			
+			
+			DriverService.GetDrivers(function (data) {
+				$scope.drivers = data;
+			});			
+		}
 		
 		$scope.selectedCarChanged = function() {
 			CarService.GetSkins($scope.newEntry.MODEL, function(data) {
