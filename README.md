@@ -32,7 +32,10 @@ Create a directory called 'acmanager', cd into that directory and run this comma
 ```
 wget https://github.com/Pringlez/ACServerManager/archive/master.zip
 ```
-Unzip the file, you'll first need to configure your server settings.
+Unzip the file, you'll first need to configure your server settings. Run this
+```
+unzip master.zip; mv ACServerManager-master/* .; rm -R ACServerManager-master; rm master.zip
+```
 
 ## ACServerManager Configuration
 To configure your manager's settings, open the 'settings.js' file. You'll see a number of variables, point the 'serverPath'
@@ -45,6 +48,10 @@ Note: I've currently set the Assetto Corsa Server installation to one directory 
 If your machine has a firewall enabled (i.e) iptables, you'll need to open / allow the ACServerManager port defined in your settings.js file.
 
 ## Running ACServerManager
+You first need to make sure you have the necessary Node.js dependencies, run:
+```
+npm install
+```
 To run ACServerManager using PM2 run the following command:
 ```
 pm2 start server.js
