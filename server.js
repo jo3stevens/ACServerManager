@@ -794,7 +794,7 @@ app.post('/api/acserver', function(req, res) {
                     acServer = childProcess.spawn('./acServer', { cwd: serverPath });
                 }
 		acServerPid = acServer.pid;
-		acServerLogName = getDateTimeString() + '_log.txt';
+		acServerLogName = 'logs/' + getDateTimeString() + '_log.txt';
 		
 		acServer.stdout.on('data', function(data) {
 			if (acServerStatus === 0) {

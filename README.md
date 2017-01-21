@@ -61,3 +61,12 @@ To monitor applications running with PM2 run:
 pm2 list
 ```
 There many useful commands to manage applications using PM2, reference their GitHub page.
+
+## Using ACServerManager
+Using ACServerManager is quite intuitive, to start your Assetto Corsa Server just click the 'Start' button. Note, the server
+may fail to start in some cases if the Assetto Corsa Server cannot connect to the master server. Make sure you portforward / open
+the necessary ports for the server to function correctly.
+
+Navigate through the top menus to configure your AC server.
+
+Happy Racing!
