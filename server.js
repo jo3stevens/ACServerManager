@@ -61,7 +61,7 @@ function getDateTimeString() {
 }
 
 function writeLogFile(filename, message) {
-	fs.appendFile(__dirname + '/' + filename, message + '\r\n', function(err) {
+	fs.appendFile(__dirname + 'logs/' + filename, message + '\r\n', function(err) {
 		if(err) {
 			throw(err);
 		}
@@ -794,7 +794,7 @@ app.post('/api/acserver', function(req, res) {
                     acServer = childProcess.spawn('./acServer', { cwd: serverPath });
                 }
 		acServerPid = acServer.pid;
-		acServerLogName = 'logs/' + getDateTimeString() + '_log.txt';
+		acServerLogName = getDateTimeString() + '_log.txt';
 		
 		acServer.stdout.on('data', function(data) {
 			if (acServerStatus === 0) {
