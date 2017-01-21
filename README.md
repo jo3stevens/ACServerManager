@@ -1,65 +1,56 @@
-# ACServerManager
-Web based server manager for Assetto Corsa directly manipulating the ini files on the server as an alternative to the windows app and having to copy files to your server.
+# ACServerManager on Linux
+Installation guide on Linux, to review the Windows installation guide go [here](https://github.com/jo3stevens/ACServerManager),
+or review the 'README_Windows.md' from the original master. 
 
-Start and stop the server, and stracker directly from the application, meaning you can make changes to the server configuration and restart the server directly from your browser or mobile phone.
+## Details
+First you'll need to install Node.js on your machine. It's best to use an application 
+like [NVM](https://github.com/creationix/nvm) to manage the installation of Node.js on Linux based machines.
+After installing Node.js, install [PM2](https://github.com/Unitech/pm2) when using this
+version of AC Server Manager, it's basically Node.js application management tool with tons of features
+for production use. PM2 will make sure your web application stays online and, auto restarts if it crashes.
 
-##Updates
-17/10/2015:
-- Bug fix when switching between two tracks with multiple track configs
-- Added Max Ballast and UDP Plugin fields to Advanced page
-- Added new setting for contentPath allowing server and content folders to be seperated (this happens when using a manager package from the kunos tool). If this setting it left empty it will assume the content folder is inside the server folder
+## Install NVM
+To install NVM, follow the installation guide on it's GitHub page [here](https://github.com/creationix/nvm). You may need sudo / root access.
 
-22/08/2015:
-- Finished adding all the new settings from 1.2 including tyres and weather
+## Install Node.js
+Using NVM run the following command to install the latest version:
 
-##Installation
-###Prep
+```
+nvm install node
+```
 
-31/08/2015: NOTE: If you've been using the new windows server manager that came with 1.2 then you may not need this step as when you package the server files it does the same thing.
+If you would like to install a specific version using NVM then run something like this:
 
-The application needs some additional files added to the server/content/tracks and server/content/cars folders to be able to choose track configurations and car skins.
+```
+nvm install 6.9.4
+```
+## Install PM2
+To install PM2, follow the installation guide on its GitHub page [here](https://github.com/Unitech/pm2). You may need sudo / root access.
 
-Copy acServerManager.bat to your root aessettocorsa folder and run it to copy the required folders into server/content/*. You'll then need to copy the content folder to your server.
+## Install ACServerManager
+Create a directory called 'acmanager', cd into that directory and run this command to download the latest version:
+```
+wget https://github.com/Pringlez/ACServerManager/archive/master.zip
+```
+Unzip the file, you'll first need to configure your server settings.
 
-For tracks it will copy the ui folder which will contain sub folders when there are multiple track configurations. It will also copy the contents of these directories which contains additional track information which is displayed when choosing a track.
+## ACServerManager Configuration
+To configure your manager's settings, open the 'settings.js' file. You'll see a number of variables, point the 'serverPath'
+to your Assetto Corsa Server directory. You can configure your username, password & port settings for ACServerManager, also 
+if you use sTracker, point the 'sTrackerPath' variable to your installation.
 
-For cars it will copy the skins/* folder structure but not the files; this is just to be able to choose the skin when setting up the entry list.
+Note: I've currently set the Assetto Corsa Server installation to one directory up in 'server', change if necessary.
 
-###NodeJS
-Download and install NodeJS and your server from https://nodejs.org/
+## Firewall
+If your machine has a firewall enabled (i.e) iptables, you'll need to open / allow the ACServerManager port defined in your settings.js file.
 
-###Web Application
-Copy the web application to your server, it doesn't matter where you choose to put it.
-
-###Configuration
-Open settings.js and set the correct values for your setup:
-- serverPath: The path to your server folder containing acServer.exe
-- sTrackerPath: The path to your stracker folder container stracker.exe (If you don't run stracker just leave this as an empty string ('') to disable it
-- username/password: Set these values if you want basic authentication on the application
-- port: The port that the application will listen on (Be sure to open up this port on firewalls)
-
-##Usage
-- Run start.bat
-- Browse to the application using your servers public IP and the chosen port (or any DNS configured)
-- Click the Start button under Assetto Corsa Server section
-- If using sTracker wait until the AC server has started and the click Start in the sTracker Server section
-
-The server will now be running. You'll be able to see any server output in the command window and it will be logged to a file in the AcServerManager folder.
-
-You can change any setting and it will be applied directly to server_cfg.ini and entry_list.ini on the server. After making a change just stop and start the server from the Server Status page.
-
-##Screenshots
-###Server Status
-![Server Status](http://yeahyou.com/ACServerManager/server-status.jpg)
-
-###Server Configuration
-![Server Config](http://www.yeahyou.com/ACServerManager/server-config.jpg)
-
-###Entry List
-![Server Config](http://www.yeahyou.com/ACServerManager/entry-list.jpg)
-
-###Rules
-![Server Config](http://www.yeahyou.com/ACServerManager/rules.jpg)
-
-###Advanced
-![Server Config](http://www.yeahyou.com/ACServerManager/advanced.jpg)
+## Running ACServerManager
+To run ACServerManager using PM2 run the following command:
+```
+pm2 start server.js
+```
+To monitor applications running with PM2 run:
+```
+pm2 list
+```
+There many useful commands to manage applications using PM2, reference their GitHub page.
