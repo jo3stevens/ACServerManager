@@ -10,7 +10,7 @@ version of AC Server Manager, it's basically Node.js application management tool
 for production use. PM2 will make sure your web application stays online and, auto restarts if it crashes.
 
 ## Install NVM
-To install NVM, follow the installation guide on it's GitHub page [here](https://github.com/creationix/nvm). You may need sudo / root access.
+To install NVM, follow the installation guide on its GitHub page [here](https://github.com/creationix/nvm). You may need sudo / root access.
 
 ## Install Node.js
 Using NVM run the following command to install the latest version:
@@ -32,11 +32,11 @@ Create a directory called 'acmanager', cd into that directory and run this comma
 ```
 wget https://github.com/Pringlez/ACServerManager/archive/master.zip
 ```
-Unzip the file, you'll first need to configure your server settings. Run this
+Unzip the file, 
 ```
 unzip master.zip; mv ACServerManager-master/* .; rm -R ACServerManager-master; rm master.zip
 ```
-
+You'll need to first configure your manager's settings before you can run the application.
 ## ACServerManager Configuration
 To configure your manager's settings, open the 'settings.js' file. You'll see a number of variables, point the 'serverPath'
 to your Assetto Corsa Server directory. You can configure your username, password & port settings for ACServerManager, also 
