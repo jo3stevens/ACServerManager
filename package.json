@@ -1,12 +1,18 @@
 {
   "name": "acsm",
-  "version": "0.0.1",
-  "description": "Manage Assetto Corsa server configuration",
+  "version": "0.0.2",
+  "description": "Assetto Corsa Server Manager",
   "main": "server.js",
-  "author": "Joe Stevens",
+  "author": "Joe Stevens / John Walsh",
   "dependencies": {
-    "body-parser": "latest",
     "express": "latest",
-    "jsonfile": "^2.2.1"
+    "fs": "latest",
+    "ini": "latest",
+    "body-parser": "latest",
+    "child_process": "latest",
+    "node-basicauth": "latest",
+    "jsonfile": "latest",
+    "util": "latest",
+    "node.extend": "latest"
   }
 }

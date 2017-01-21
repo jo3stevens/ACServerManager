@@ -1,2 +1,2 @@
-node server.js
+pm2 start server.js
 
