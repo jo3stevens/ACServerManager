@@ -2,7 +2,7 @@ module.exports = {
   serverPath: '../server/',
   contentPath: '',
   sTrackerPath: '',
-  username: 'username',
-  password: 'password',
+  username: '',
+  password: '',
   port: 42555
 };
