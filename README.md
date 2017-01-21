@@ -13,7 +13,7 @@ for production use. PM2 will make sure your web application stays online and, au
 To install NVM, follow the installation guide on its GitHub page [here](https://github.com/creationix/nvm). You may need sudo / root access.
 
 ## Install Node.js
-Using NVM run the following command to install the latest version:
+Using NVM, run the following command to install the latest version:
 
 ```
 nvm install node
@@ -32,7 +32,7 @@ Create a directory called 'acmanager', cd into that directory and run this comma
 ```
 wget https://github.com/Pringlez/ACServerManager/archive/master.zip
 ```
-Unzip the file, 
+Unzip the file & clean up, by running:
 ```
 unzip master.zip; mv ACServerManager-master/* .; rm -R ACServerManager-master; rm master.zip
 ```
