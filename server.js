@@ -61,7 +61,7 @@ function getDateTimeString() {
 }
 
 function writeLogFile(filename, message) {
-	fs.appendFile(__dirname + 'logs/' + filename, message + '\r\n', function(err) {
+	fs.appendFile(__dirname + '/logs/' + filename, message + '\r\n', function(err) {
 		if(err) {
 			throw(err);
 		}
