@@ -12,8 +12,8 @@
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 	
-	<!-- Custom CSS -->
-	<link href="/css/style.css" rel="stylesheet">
+		<!-- Custom CSS -->
+		<link href="/css/style.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -37,125 +37,123 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-			<li><a href="index.html">Server Status</a></li>
+						<li><a href="index.html">Server Status</a></li>
             <li><a href="server.html">Server Configuration</a></li>
             <li><a href="entrylist.html">Entry List</a></li>
             <li><a href="rules.html">Rules</a></li>
-			<li class="active"><a href="advanced.html">Advanced</a></li>
+						<li class="active"><a href="advanced.html">Advanced</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-		<div class="alerts">
-			<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
-		</div>
+			<div class="alerts">
+				<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+			</div>
 
-      <div class="starter-template">
-        <h1>Advanced</h1>
-      </div>
-		<form ng-submit="submit()" name="form" data-toggle="validator">
-			<div class="row">
-				<div class="col-sm-4">
-					<div class="form-group" show-errors>
-						<label>Sleep Time</label>
-						<input class="form-control" name="sleep_time" ng-model="server.SLEEP_TIME" required>
-					 </div>
+				<div class="starter-template">
+					<h1>Advanced</h1>
 				</div>
-				<div class="col-sm-4">
-					<div class="form-group" show-errors>
-						<label>Voting Quorum</label>
-						<input class="form-control" name="voting_quorum" ng-model="server.VOTING_QUORUM" required>
-					 </div>
-				</div>
-				<div class="col-sm-4">
-					<div class="form-group" show-errors>
-						<label>Voting Duration</label>
-						<input class="form-control" name="vote_duration" ng-model="server.VOTE_DURATION" required>
-					 </div>
-				</div>
-			</div>
-			
-			<div class="row">
-				<div class="col-sm-4">
-					<div class="form-group" show-errors>
-						<label>Kick Vote Quorum</label>
-						<input class="form-control" name="kick_vote_quorum" ng-model="server.KICK_QUORUM" required>
-					 </div>
-				</div>
-				<div class="col-sm-4">
-					<div class="form-group" show-errors>
-						<label>Blacklist Mode</label>
-						<select class="form-control" name="blacklist_mode" ng-model="server.BLACKLIST_MODE">
-							<option value="0">Kick Player</option>
-							<option value="1">Ban Until Restart</option>
-							<option value="2">Ban and Forget</option>
-						</select>
-					 </div>
-				</div>
-				<div class="col-sm-4">
-					<div class="form-group" show-errors>
-						<label>Client Send Interval (hz)</label>
-						<input class="form-control" name="client_send_interval_hz" ng-model="server.CLIENT_SEND_INTERVAL_HZ" required>
-					 </div>
-				</div>
-			</div>
-			
-			<div class="row">
-				<div class="col-sm-4">
-					<div class="form-group" show-errors>
-						<label>Max Ballast (Kg)</label>
-						<input class="form-control" type="number" min="0" name="max_ballast" ng-model="server.MAX_BALLAST_KG" required>
-					 </div>
-				</div>
-			</div>
-			
-			<fieldset class="top10">
-				<legend>Plugin</legend>
+			<form ng-submit="submit()" name="form" data-toggle="validator">
 				<div class="row">
 					<div class="col-sm-4">
 						<div class="form-group" show-errors>
-							<label>UDP Local Port</label>
-							<input class="form-control" type="number" min="0" name="udp_local_port" ng-model="server.UDP_PLUGIN_LOCAL_PORT">
-						 </div>
+							<label>Sleep Time</label>
+							<input class="form-control" name="sleep_time" ng-model="server.SLEEP_TIME" required>
+						</div>
 					</div>
 					<div class="col-sm-4">
 						<div class="form-group" show-errors>
-							<label>UDP Address</label>
-							<input class="form-control" name="udp_address" ng-model="server.UDP_PLUGIN_ADDRESS">
-						 </div>
+							<label>Voting Quorum</label>
+							<input class="form-control" name="voting_quorum" ng-model="server.VOTING_QUORUM" required>
+						</div>
 					</div>
 					<div class="col-sm-4">
 						<div class="form-group" show-errors>
-							<label>Auth Address</label>
-							<input class="form-control" name="udp_local_port" ng-model="server.AUTH_PLUGIN_ADDRESS">
-						 </div>
+							<label>Voting Duration</label>
+							<input class="form-control" name="vote_duration" ng-model="server.VOTE_DURATION" required>
+						</div>
 					</div>
 				</div>
-			</fieldset>
-			
-			<div class="row top30 bottom30">
-				<div class="col-sm-6">
-					<button type="submit" class="btn btn-primary">Save Changes</button>
+				
+				<div class="row">
+					<div class="col-sm-4">
+						<div class="form-group" show-errors>
+							<label>Kick Vote Quorum</label>
+							<input class="form-control" name="kick_vote_quorum" ng-model="server.KICK_QUORUM" required>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="form-group" show-errors>
+							<label>Blacklist Mode</label>
+							<select class="form-control" name="blacklist_mode" ng-model="server.BLACKLIST_MODE">
+								<option value="0">Kick Player</option>
+								<option value="1">Ban Until Restart</option>
+								<option value="2">Ban and Forget</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="form-group" show-errors>
+							<label>Client Send Interval (hz)</label>
+							<input class="form-control" name="client_send_interval_hz" ng-model="server.CLIENT_SEND_INTERVAL_HZ" required>
+						</div>
+					</div>
 				</div>
-			</div>
-		</form>
-
+				
+				<div class="row">
+					<div class="col-sm-4">
+						<div class="form-group" show-errors>
+							<label>Max Ballast (Kg)</label>
+							<input class="form-control" type="number" min="0" name="max_ballast" ng-model="server.MAX_BALLAST_KG" required>
+						</div>
+					</div>
+				</div>
+				
+				<fieldset class="top10">
+					<legend>Plugin</legend>
+					<div class="row">
+						<div class="col-sm-4">
+							<div class="form-group" show-errors>
+								<label>UDP Local Port</label>
+								<input class="form-control" type="number" min="0" name="udp_local_port" ng-model="server.UDP_PLUGIN_LOCAL_PORT">
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group" show-errors>
+								<label>UDP Address</label>
+								<input class="form-control" name="udp_address" ng-model="server.UDP_PLUGIN_ADDRESS">
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group" show-errors>
+								<label>Auth Address</label>
+								<input class="form-control" name="udp_local_port" ng-model="server.AUTH_PLUGIN_ADDRESS">
+							</div>
+						</div>
+					</div>
+				</fieldset>
+				
+				<div class="row top30 bottom30">
+					<div class="col-sm-6">
+						<button type="submit" class="btn btn-primary">Save Changes</button>
+					</div>
+				</div>
+			</form>
     </div><!-- /.container -->
-
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
-	<script src="/js/angular/angular.min.js"></script>
-	<script src="/js/angular/angular-resource.min.js"></script>
-	<script src="/js/angular/ui-bootstrap-tpls-0.13.0.min.js"></script>
-	<script src="/js/angular/show-errors.min.js"></script>
-	<script src="/app/app.js"></script>
-	<script src="/app/services.js"></script>
-	<script src="/app/controllers.js"></script>
+		<script src="/js/angular/angular.min.js"></script>
+		<script src="/js/angular/angular-resource.min.js"></script>
+		<script src="/js/angular/ui-bootstrap-tpls-0.13.0.min.js"></script>
+		<script src="/js/angular/show-errors.min.js"></script>
+		<script src="/app/app.js"></script>
+		<script src="/app/services.js"></script>
+		<script src="/app/controllers.js"></script>
   </body>
 </html>

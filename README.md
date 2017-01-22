@@ -1,5 +1,10 @@
-# ACServerManager on Linux
-Installation guide on Linux, to review the Windows installation guide go [here](https://github.com/jo3stevens/ACServerManager),
+# ACServerManager
+Web based server manager for Assetto Corsa directly manipulating the ini files on the server as an alternative to the windows app and having to copy files to your server.
+
+Start and stop the server, and stracker directly from the application, meaning you can make changes to the server configuration and restart the server directly from your browser or mobile phone.
+
+## ACServerManager on Linux
+This is the installation guide on Linux machine, to review the Windows installation guide go [here](https://github.com/jo3stevens/ACServerManager),
 or review the 'README_Windows.md' from the original master. 
 
 ## Details
