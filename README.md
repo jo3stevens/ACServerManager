@@ -4,8 +4,7 @@ Web based server manager for Assetto Corsa directly manipulating the ini files o
 Start and stop the server, and stracker directly from the application, meaning you can make changes to the server configuration and restart the server directly from your browser or mobile phone.
 
 ## ACServerManager on Linux
-This is the installation guide on Linux machine, to review the Windows installation guide go [here](https://github.com/jo3stevens/ACServerManager),
-or review the 'README_Windows.md' from the original master. 
+This is the installation guide for a Linux machine, to review the Windows installation guide go [here](https://github.com/Pringlez/ACServerManager/blob/master/README_Windows.md).
 
 ## Details
 First you'll need to install Node.js on your machine. It's best to use an application 
@@ -15,7 +14,7 @@ version of AC Server Manager, it's basically Node.js application management tool
 for production use. PM2 will make sure your web application stays online and, auto restarts if it crashes.
 
 ## Install NVM
-To install NVM, follow the installation guide on its GitHub page [here](https://github.com/creationix/nvm). You may need sudo / root access.
+To install NVM, follow the installation guide on its GitHub page [here](https://github.com/creationix/nvm). Please install NVM on the same account you run your Assetto Corsa Server.
 
 ## Install Node.js
 Using NVM, run the following command to install the latest version:
@@ -30,7 +29,7 @@ If you would like to install a specific version using NVM then run something lik
 nvm install 6.9.4
 ```
 ## Install PM2
-To install PM2, follow the installation guide on its GitHub page [here](https://github.com/Unitech/pm2). You may need sudo / root access.
+To install PM2, follow the installation guide on its GitHub page [here](https://github.com/Unitech/pm2). Please install PM2 on the same account you run your Assetto Corsa Server.
 
 ## Install ACServerManager
 Create a directory called 'acmanager', cd into that directory and run this command to download the latest version:
