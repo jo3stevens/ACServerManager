@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "description": "Assetto Corsa Server Manager",
   "main": "server.js",
-  "author": "Joe Stevens / John Walsh",
+  "author": "Joe Stevens",
   "dependencies": {
     "express": "latest",
     "fs": "latest",
