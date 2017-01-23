@@ -909,7 +909,8 @@ app.post('/api/acserver/restart', function (req, res) {
 
 			acServerPid = acServer.pid;
 			acServerLogName = getDateTimeString() + '_log.txt';
-
+			acServerStatus = 0;
+			
 			acServer.stdout.on('data', function (data) {
 				if (acServerStatus === 0) {
 					acServerStatus = -1;
@@ -1028,6 +1029,7 @@ app.post('/api/strackerserver/restart', function (req, res) {
 			childProcess.spawn("taskkill", ["/pid", sTrackerServerPid, '/f', '/t']);
 			var sTracker = childProcess.spawn('stracker.exe', ['--stracker_ini', 'stracker.ini'], { cwd: sTrackerPath });
 			sTrackerServerPid = sTracker.pid;
+			sTrackerServerStatus = 0;
 			
 			sTracker.stdout.on('data', function (data) {
 				if (sTrackerServerStatus == 0) {

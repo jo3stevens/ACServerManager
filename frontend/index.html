@@ -65,13 +65,15 @@
 								<span class="glyphicon glyphicon-play" aria-hidden="true"></span> Start
 							</button>
 							
-							<button type="button" class="btn btn-default" ng-show="acServerStatus === 1" ng-click="restartACServer()">
-								<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Restart
-							</button>
-							
-							<button type="button" class="btn btn-default" ng-show="acServerStatus === 1" ng-click="stopACServer()">
-								<span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Stop
-							</button>
+							<div class="btn-group" role="group">
+								<button type="button" class="btn btn-default" ng-show="acServerStatus === 1" ng-click="restartACServer()">
+									<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Restart
+								</button>
+								
+								<button type="button" class="btn btn-default" ng-show="acServerStatus === 1" ng-click="stopACServer()">
+									<span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Stop
+								</button>
+							</div>
 							<img src="/img/ajax-loader.gif" alt="Loading" ng-show="acServerStatus === -1" />
 						</div>
 					</div>
@@ -89,13 +91,15 @@
 								<span class="glyphicon glyphicon-play" aria-hidden="true"></span> Start
 							</button>
 							
-							<button type="button" class="btn btn-default" ng-show="sTrackerServerStatus === 1" ng-click="restartSTrackerServer()">
-								<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Restart
-							</button>
-							
-							<button type="button" class="btn btn-default" ng-show="sTrackerServerStatus === 1" ng-click="stopSTrackerServer()">
-								<span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Stop
-							</button>
+							<div class="btn-group" role="group">
+								<button type="button" class="btn btn-default" ng-show="sTrackerServerStatus === 1" ng-click="restartSTrackerServer()">
+									<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Restart
+								</button>
+								
+								<button type="button" class="btn btn-default" ng-show="sTrackerServerStatus === 1" ng-click="stopSTrackerServer()">
+									<span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Stop
+								</button>
+							</div>
 							<img src="/img/ajax-loader.gif" alt="Loading" ng-show="sTrackerServerStatus === -1" />
 						</div>
 					</div>
