@@ -48,11 +48,6 @@ angular.module('acServerManager')
 					createAlert('warning', 'Failed to restart AC server', true)
 				}
 			})
-			try{
-				$scope.restartSTrackerServer();
-			} catch(e){
-				console.log('Error: Restarting sTracker - ' + e);
-			}
 		}
 		
 		$scope.startSTrackerServer = function() {
