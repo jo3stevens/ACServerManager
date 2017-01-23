@@ -42,6 +42,17 @@ angular.module('acServerManager')
 			})
 		}
 		
+		$scope.restartACServer = function() {
+			$scope.stopSTrackerServer();
+			ProcessService.RestartACServer(function(result) {
+				if (!(result[0] === 'O' && result[1] === 'K')) {
+					createAlert('warning', 'Failed to restart AC server', true)
+				} else{
+					$scope.startSTrackerServer();
+				}
+			})
+		}
+		
 		$scope.startSTrackerServer = function() {
 			ProcessService.StartSTrackerServer(function(result) {
 				if (!(result[0] === 'O' && result[1] === 'K')) {
@@ -54,6 +65,14 @@ angular.module('acServerManager')
 			ProcessService.StopSTrackerServer(function(result) {
 				if (!(result[0] === 'O' && result[1] === 'K')) {
 					createAlert('warning', 'Failed to stop stracker', true)
+				}
+			})
+		}
+		
+		$scope.restartSTrackerServer = function() {
+			ProcessService.RestartSTrackerServer(function(result) {
+				if (!(result[0] === 'O' && result[1] === 'K')) {
+					createAlert('warning', 'Failed to restart stracker', true)
 				}
 			})
 		}
@@ -316,8 +335,7 @@ angular.module('acServerManager')
 			if (practice !== null) {
 				if(!practice.enabled) {
 					practice.data = {};
-				}
-				else {
+				} else {
 					practice.data.IS_OPEN = practice.data.IS_OPEN ? 1 : 0;
 				}
 				
@@ -332,8 +350,7 @@ angular.module('acServerManager')
 			if (qualify !== null) {
 				if(!qualify.enabled) {
 					qualify.data = {};
-				}
-				else {
+				} else {
 					qualify.data.IS_OPEN = qualify.data.IS_OPEN ? 1 : 0;
 				}
 				
