@@ -43,14 +43,16 @@ angular.module('acServerManager')
 		}
 		
 		$scope.restartACServer = function() {
-			$scope.stopSTrackerServer();
 			ProcessService.RestartACServer(function(result) {
 				if (!(result[0] === 'O' && result[1] === 'K')) {
 					createAlert('warning', 'Failed to restart AC server', true)
-				} else{
-					$scope.startSTrackerServer();
 				}
 			})
+			try{
+				$scope.restartSTrackerServer();
+			} catch(e){
+				console.log('Error: Restarting sTracker - ' + e);
+			}
 		}
 		
 		$scope.startSTrackerServer = function() {
