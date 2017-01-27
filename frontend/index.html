@@ -103,7 +103,7 @@
 										<p class="lead" ng-class="acServerStatus ? 'bg-success' : 'bg-danger'">{{acServerStatus === 1 ? 'Running' : acServerStatus === 0 ? 'Stopped' : 'Loading...'}}</p>
 									</div>
 									
-									<div class="col-sm-2">
+									<div class="col-sm-3">
 										<button type="button" class="btn btn-success btn-sm" ng-show="acServerStatus === 0" ng-click="startACServer()">
 											<span class="glyphicon glyphicon-play" aria-hidden="true"></span> Start
 										</button>
@@ -130,7 +130,7 @@
 										<p class="lead" ng-class="sTrackerServerStatus ? 'bg-success' : 'bg-danger'">{{sTrackerServerStatus === 1 ? 'Running' : acServerStatus === 0 ? 'Stopped' : 'Loading...'}}</p>
 									</div>
 									
-									<div class="col-sm-2">
+									<div class="col-sm-3">
 										<button type="button" class="btn btn-success btn-sm" ng-show="sTrackerServerStatus === 0 && acServerStatus === 1" ng-click="startSTrackerServer()">
 											<span class="glyphicon glyphicon-play" aria-hidden="true"></span> Start
 										</button>
