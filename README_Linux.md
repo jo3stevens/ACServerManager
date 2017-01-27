@@ -7,6 +7,10 @@ Start and stop the server, and stracker directly from the application, meaning y
 This is the installation guide for a Linux machine, to review the Windows installation guide go [here](https://github.com/Pringlez/ACServerManager/blob/master/README.md).
 
 ## Updates
+27/01/2017:
+* Update to UI layout
+* Added restart feature for AC & sTracker server
+
 17/10/2015:
 * Bug fix when switching between two tracks with multiple track configs
 * Added Max Ballast and UDP Plugin fields to Advanced page
