@@ -104,16 +104,16 @@
 									</div>
 									
 									<div class="col-sm-2">
-										<button type="button" class="btn btn-success" ng-show="acServerStatus === 0" ng-click="startACServer()">
+										<button type="button" class="btn btn-success btn-sm" ng-show="acServerStatus === 0" ng-click="startACServer()">
 											<span class="glyphicon glyphicon-play" aria-hidden="true"></span> Start
 										</button>
 										
 										<div class="btn-group" role="group">
-											<button type="button" class="btn btn-warning" ng-show="acServerStatus === 1" ng-click="restartACServer()">
+											<button type="button" class="btn btn-danger btn-sm" ng-show="acServerStatus === 1" ng-click="restartACServer()">
 												<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Restart
 											</button>
 											
-											<button type="button" class="btn btn-danger" ng-show="acServerStatus === 1" ng-click="stopACServer()">
+											<button type="button" class="btn btn-danger btn-sm" ng-show="acServerStatus === 1" ng-click="stopACServer()">
 												<span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Stop
 											</button>
 										</div>
@@ -131,16 +131,16 @@
 									</div>
 									
 									<div class="col-sm-2">
-										<button type="button" class="btn btn-success" ng-show="sTrackerServerStatus === 0 && acServerStatus === 1" ng-click="startSTrackerServer()">
+										<button type="button" class="btn btn-success btn-sm" ng-show="sTrackerServerStatus === 0 && acServerStatus === 1" ng-click="startSTrackerServer()">
 											<span class="glyphicon glyphicon-play" aria-hidden="true"></span> Start
 										</button>
 										
 										<div class="btn-group" role="group">
-											<button type="button" class="btn btn-warning" ng-show="sTrackerServerStatus === 1" ng-click="restartSTrackerServer()">
+											<button type="button" class="btn btn-danger btn-sm" ng-show="sTrackerServerStatus === 1" ng-click="restartSTrackerServer()">
 												<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Restart
 											</button>
 											
-											<button type="button" class="btn btn-danger" ng-show="sTrackerServerStatus === 1" ng-click="stopSTrackerServer()">
+											<button type="button" class="btn btn-danger btn-sm" ng-show="sTrackerServerStatus === 1" ng-click="stopSTrackerServer()">
 												<span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Stop
 											</button>
 										</div>
