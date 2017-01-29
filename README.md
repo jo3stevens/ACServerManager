@@ -73,16 +73,16 @@ the necessary ports for the server to function correctly.
 
 ## Screenshots
 ### Server Status
-![Server Status](http://yeahyou.com/ACServerManager/server-status.jpg)
+![Server Status](https://lh5.googleusercontent.com/2A1zB6hntRNwfaNcwa6UHZJi6G0ZT1iz11_nPL2woKHKuPcxGdH8UauPy54mgl9Exxbqyxbgr2KSzxw=w1920-h950-rw)
 
 ### Server Configuration
-![Server Config](http://www.yeahyou.com/ACServerManager/server-config.jpg)
+![Server Config](https://lh4.googleusercontent.com/UVhXzRtYoJSMoB-WYkeOOPCmyx0xBbzN22dV18VVcY2ExhhoFzLaCbKBjWwjXkt0td7miThLUEHaEKE=w1920-h950-rw)
 
 ### Entry List
-![Server Config](http://www.yeahyou.com/ACServerManager/entry-list.jpg)
+![Server Config](https://lh6.googleusercontent.com/fMaC9HmhiUobWUfOmQVIhuZ-3gVP2RqPxxYKkJhMBo9edHXQk_iQHi9ZCZaTMTmFY5qnMp6-IzdVdDY=w1920-h950-rw)
 
 ### Rules
-![Server Config](http://www.yeahyou.com/ACServerManager/rules.jpg)
+![Server Config](https://lh6.googleusercontent.com/cMj1FpKSlcFP4hae1rgksopTmDy5MJNrgWYh-PLC2F6fnqMJ_EN2gOCUx1n6Kk1R7HllQWgUEliAJ3g=w1920-h950-rw)
 
 ### Advanced
-![Server Config](http://www.yeahyou.com/ACServerManager/advanced.jpg)
+![Server Config](https://lh3.googleusercontent.com/QmlcFPVYhLMoI8T8CT_GEv_-9ePYEhsTx-KBgl5qOn_VsdeqjWnEAOli508jwstGFNFrV7R1TDqKfN8=w1920-h950-rw)
