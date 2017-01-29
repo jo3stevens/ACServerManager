@@ -95,16 +95,16 @@ the necessary ports for the server to function correctly.
 
 ## Screenshots
 ### Server Status
-![Server Status](http://yeahyou.com/ACServerManager/server-status.jpg)
+![Server Status](http://deltahosting.dyndns.org:8080/acmanager/screen-cap-1.JPG)
 
 ### Server Configuration
-![Server Config](http://www.yeahyou.com/ACServerManager/server-config.jpg)
+![Server Config](http://deltahosting.dyndns.org:8080/acmanager/screen-cap-2.JPG)
 
 ### Entry List
-![Server Config](http://www.yeahyou.com/ACServerManager/entry-list.jpg)
+![Entry List](http://deltahosting.dyndns.org:8080/acmanager/screen-cap-3.JPG)
 
 ### Rules
-![Server Config](http://www.yeahyou.com/ACServerManager/rules.jpg)
+![Rules](http://deltahosting.dyndns.org:8080/acmanager/screen-cap-4.JPG)
 
 ### Advanced
-![Server Config](http://www.yeahyou.com/ACServerManager/advanced.jpg)
+![Advanced](http://deltahosting.dyndns.org:8080/acmanager/screen-cap-5.JPG)
