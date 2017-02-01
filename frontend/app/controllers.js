@@ -311,8 +311,11 @@ angular.module('acServerManager')
 				data.REGISTER_TO_LOBBY = $scope.server.REGISTER_TO_LOBBY ? 1 : 0;
 				data.CARS = $scope.selectedCars.join(';');
 				data.TRACK = $scope.selectedTracks; //TODO: Multi-track
-				data.LEGAL_TYRES = $scope.selectedTyres.length === $scope.tyres.length ? '' : $scope.selectedTyres.join(';');
 				data.SUN_ANGLE = getSunAngle($scope.hours, $scope.mins);
+
+				if (typeof $scope.tyres.length === 'undefined' || !$scope.tyres.length){
+					data.LEGAL_TYRES = $scope.selectedTyres.length === $scope.tyres.length ? '' : $scope.selectedTyres.join(';');
+				}
 				
 				var saved = true;
 				
