@@ -164,6 +164,7 @@ angular.module('acServerManager')
 		});
 		
 		ServerService.GetServerDetails(function (data) {
+			$scope.server = data;
 			$scope.selectedCars = data.CARS.split(';');
 			$scope.selectedTracks = data.TRACK; //TODO: Multi-track
 			$scope.selectedTyres = data.LEGAL_TYRES.split(';');
@@ -172,12 +173,12 @@ angular.module('acServerManager')
 			data.PICKUP_MODE_ENABLED = data.PICKUP_MODE_ENABLED == 1;
 			data.REGISTER_TO_LOBBY = data.REGISTER_TO_LOBBY == 1;
 			
-			var time = getTime(data.SUN_ANGLE);
-			$scope.hours = time.getHours();
-			$scope.mins = time.getMinutes();
-			
-			$scope.server = data;
-			
+			if(data.SUN_ANGLE > 0){
+				var time = getTime(data.SUN_ANGLE);
+				$scope.hours = time.getHours();
+				$scope.mins = time.getMinutes();
+			}
+
 			$scope.carsChanged();
 			$scope.trackChanged();
 		});

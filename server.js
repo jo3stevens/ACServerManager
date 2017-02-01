@@ -1,6 +1,7 @@
 var express = require('express');
 var fs = require('fs');
 var ini = require('ini');
+var multiLine = require('multi-ini');
 var bodyParser = require('body-parser');
 var childProcess = require('child_process');
 var basicAuth = require('node-basicauth');
@@ -30,23 +31,23 @@ var acServerLogName;
 
 var currentSession;
 
-var config = ini.parse(fs.readFileSync(serverPath + 'cfg/server_cfg.ini', 'utf-8'))
-var entryList = ini.parse(fs.readFileSync(serverPath + 'cfg/entry_list.ini', 'utf-8'))
-var ksTyres = ini.parse(fs.readFileSync(serverPath + 'manager/ks_tyres.ini', 'utf-8'))
+var config =  multiLine.read(serverPath + 'cfg/server_cfg.ini', {encoding: 'utf8'});
+var entryList =  multiLine.read(serverPath + 'cfg/entry_list.ini', {encoding: 'utf8'});
+var ksTyres =  multiLine.read(serverPath + 'manager/ks_tyres.ini', {encoding: 'utf8'});
 
 var modTyres;
 fs.exists(serverPath + 'manager/mod_tyres.ini', function (exists) {
 	if (exists) {
-		modTyres = ini.parse(fs.readFileSync(serverPath + 'manager/mod_tyres.ini', 'utf-8'))
+		modTyres = ini.parse(fs.readFileSync(serverPath + 'manager/mod_tyres.ini', 'utf-8'));
 	}
 });
 
 function saveConfig() {
-	fs.writeFileSync(serverPath + 'cfg/server_cfg.ini', ini.stringify(config));
+	fs.writeFileSync(serverPath + 'cfg/server_cfg.ini', ini.stringify(config).replace(/\\/gi,''));
 }
 
 function saveEntryList() {
-	fs.writeFileSync(serverPath + 'cfg/entry_list.ini', ini.stringify(entryList));
+	fs.writeFileSync(serverPath + 'cfg/entry_list.ini', ini.stringify(entryList).replace(/\\/gi,''));
 }
 
 function getDirectories(srcpath) {
@@ -129,7 +130,6 @@ app.post('/api/server', function (req, res) {
 		for (var param in req.body) {
 			config.SERVER[param.toUpperCase()] = req.body[param];
 		}
-
 		saveConfig();
 		res.status(200);
 		res.send('OK');

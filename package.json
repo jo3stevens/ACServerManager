@@ -8,6 +8,7 @@
     "express": "latest",
     "fs": "latest",
     "ini": "latest",
+    "multi-ini": "latest",
     "body-parser": "latest",
     "child_process": "latest",
     "node-basicauth": "latest",
