@@ -165,20 +165,25 @@ angular.module('acServerManager')
 		
 		ServerService.GetServerDetails(function (data) {
 			$scope.server = data;
-			$scope.selectedCars = data.CARS.split(';');
-			$scope.selectedTracks = data.TRACK; //TODO: Multi-track
-			$scope.selectedTyres = data.LEGAL_TYRES.split(';');
-			
-			data.LOOP_MODE = data.LOOP_MODE == 1;
-			data.PICKUP_MODE_ENABLED = data.PICKUP_MODE_ENABLED == 1;
-			data.REGISTER_TO_LOBBY = data.REGISTER_TO_LOBBY == 1;
-			
-			if(data.SUN_ANGLE > 0){
-				var time = getTime(data.SUN_ANGLE);
-				$scope.hours = time.getHours();
-				$scope.mins = time.getMinutes();
-			}
 
+			try {
+				$scope.selectedCars = data.CARS.split(';');
+				$scope.selectedTracks = data.TRACK; //TODO: Multi-track
+				$scope.selectedTyres = data.LEGAL_TYRES.split(';');
+			
+				data.LOOP_MODE = data.LOOP_MODE == 1;
+				data.PICKUP_MODE_ENABLED = data.PICKUP_MODE_ENABLED == 1;
+				data.REGISTER_TO_LOBBY = data.REGISTER_TO_LOBBY == 1;
+			
+				if(data.SUN_ANGLE > 0){
+					var time = getTime(data.SUN_ANGLE);
+					$scope.hours = time.getHours();
+					$scope.mins = time.getMinutes();
+				}
+			} catch (error) {
+				console.log('Error - ' + error);
+			}
+			
 			$scope.carsChanged();
 			$scope.trackChanged();
 		});
@@ -298,96 +303,100 @@ angular.module('acServerManager')
 				return; 
 			}
 			
-			var data = angular.copy($scope.server);
+			try {
+				var data = angular.copy($scope.server);
 			
-			data.LOOP_MODE = $scope.server.LOOP_MODE ? 1 : 0;
-			data.PICKUP_MODE_ENABLED = $scope.server.PICKUP_MODE_ENABLED ? 1 : 0;
-			data.REGISTER_TO_LOBBY = $scope.server.REGISTER_TO_LOBBY ? 1 : 0;
-			data.CARS = $scope.selectedCars.join(';');
-			data.TRACK = $scope.selectedTracks; //TODO: Multi-track
-			data.LEGAL_TYRES = $scope.selectedTyres.length === $scope.tyres.length ? '' : $scope.selectedTyres.join(';');
-			data.SUN_ANGLE = getSunAngle($scope.hours, $scope.mins);
-			
-			var saved = true;
-			
-			ServerService.SaveServerDetails(data, function(result) {
-				if (!(result[0] === 'O' && result[1] === 'K')) {
-					saved = false;
-				}
-			});
-			
-			var booking = findInArray($scope.sessions, { type: 'Booking' });
-			if (booking !== null) {
-				if(!booking.enabled) {
-					booking.data = {};
-				}
+				data.LOOP_MODE = $scope.server.LOOP_MODE ? 1 : 0;
+				data.PICKUP_MODE_ENABLED = $scope.server.PICKUP_MODE_ENABLED ? 1 : 0;
+				data.REGISTER_TO_LOBBY = $scope.server.REGISTER_TO_LOBBY ? 1 : 0;
+				data.CARS = $scope.selectedCars.join(';');
+				data.TRACK = $scope.selectedTracks; //TODO: Multi-track
+				data.LEGAL_TYRES = $scope.selectedTyres.length === $scope.tyres.length ? '' : $scope.selectedTyres.join(';');
+				data.SUN_ANGLE = getSunAngle($scope.hours, $scope.mins);
 				
-				BookService.SaveBookingDetails(booking.data, function(result) {
+				var saved = true;
+				
+				ServerService.SaveServerDetails(data, function(result) {
 					if (!(result[0] === 'O' && result[1] === 'K')) {
 						saved = false;
 					}
 				});
-			}
-			
-			var practice = findInArray($scope.sessions, { type: 'Practice' });
-			if (practice !== null) {
-				if(!practice.enabled) {
-					practice.data = {};
+				
+				var booking = findInArray($scope.sessions, { type: 'Booking' });
+				if (booking !== null) {
+					if(!booking.enabled) {
+						booking.data = {};
+					}
+					
+					BookService.SaveBookingDetails(booking.data, function(result) {
+						if (!(result[0] === 'O' && result[1] === 'K')) {
+							saved = false;
+						}
+					});
+				}
+				
+				var practice = findInArray($scope.sessions, { type: 'Practice' });
+				if (practice !== null) {
+					if(!practice.enabled) {
+						practice.data = {};
+					} else {
+						practice.data.IS_OPEN = practice.data.IS_OPEN ? 1 : 0;
+					}
+					
+					PracticeService.SavePracticeDetails(practice.data, function(result) {
+						if (!(result[0] === 'O' && result[1] === 'K')) {
+							saved = false;
+						}
+					});
+				}
+				
+				var qualify = findInArray($scope.sessions, { type: 'Qualify' });
+				if (qualify !== null) {
+					if(!qualify.enabled) {
+						qualify.data = {};
+					} else {
+						qualify.data.IS_OPEN = qualify.data.IS_OPEN ? 1 : 0;
+					}
+					
+					QualifyService.SaveQualifyDetails(qualify.data, function(result) {
+						if (!(result[0] === 'O' && result[1] === 'K')) {
+							saved = false;
+						}
+					});
+				}
+				
+				var race = findInArray($scope.sessions, { type: 'Race' });
+				if (race !== null) {
+					if(!race.enabled) {
+						race.data = {};
+					}
+					
+					RaceService.SaveRaceDetails(race.data, function(result) {
+						if (!(result[0] === 'O' && result[1] === 'K')) {
+							saved = false;
+						}
+					});
+				}
+				
+				WeatherService.SaveWeather($scope.weatherSettings, function(result) {
+					if (!(result[0] === 'O' && result[1] === 'K')) {
+						saved = false;
+					}
+				});
+				
+				if (saved) {
+					createAlert('success', 'Saved successfully', true);
 				} else {
-					practice.data.IS_OPEN = practice.data.IS_OPEN ? 1 : 0;
+					createAlert('warning', 'Save failed', true);
 				}
-				
-				PracticeService.SavePracticeDetails(practice.data, function(result) {
-					if (!(result[0] === 'O' && result[1] === 'K')) {
-						saved = false;
-					}
-				});
-			}
-			
-			var qualify = findInArray($scope.sessions, { type: 'Qualify' });
-			if (qualify !== null) {
-				if(!qualify.enabled) {
-					qualify.data = {};
-				} else {
-					qualify.data.IS_OPEN = qualify.data.IS_OPEN ? 1 : 0;
-				}
-				
-				QualifyService.SaveQualifyDetails(qualify.data, function(result) {
-					if (!(result[0] === 'O' && result[1] === 'K')) {
-						saved = false;
-					}
-				});
-			}
-			
-			var race = findInArray($scope.sessions, { type: 'Race' });
-			if (race !== null) {
-				if(!race.enabled) {
-					race.data = {};
-				}
-				
-				RaceService.SaveRaceDetails(race.data, function(result) {
-					if (!(result[0] === 'O' && result[1] === 'K')) {
-						saved = false;
-					}
-				});
-			}
-			
-			WeatherService.SaveWeather($scope.weatherSettings, function(result) {
-				if (!(result[0] === 'O' && result[1] === 'K')) {
-					saved = false;
-				}
-			});
-			
-			if (saved) {
-				createAlert('success', 'Saved successfully', true);
-			} else {
-				createAlert('warning', 'Save failed', true);
+			} catch (error) {
+				console.log('Error - ' + error);
 			}
 		}
 		
 		$scope.closeAlert = function(index) {
 			$scope.alerts.splice(index, 1);
-		  };
+		};
 		
 		function getTime(sunAngle) {
 			var baseLine = new Date(2000, 1, 1, 13, 0, 0, 0);
@@ -466,35 +475,39 @@ angular.module('acServerManager')
 				return; 
 			}
 			
-			var data = angular.copy($scope.server);
+			try {
+				var data = angular.copy($scope.server);
 			
-			data.AUTOCLUTCH_ALLOWED = $scope.server.AUTOCLUTCH_ALLOWED ? 1 : 0;
-			data.STABILITY_ALLOWED = $scope.server.STABILITY_ALLOWED ? 1 : 0;
-			data.TYRE_BLANKETS_ALLOWED = $scope.server.TYRE_BLANKETS_ALLOWED ? 1 : 0;
-			data.FORCE_VIRTUAL_MIRROR = $scope.server.FORCE_VIRTUAL_MIRROR ? 1 : 0;
-			
-			var saved = true;
-			
-			ServerService.SaveServerDetails(data, function(result) {
-				if (!(result[0] === 'O' && result[1] === 'K')) {
-					saved = false;
+				data.AUTOCLUTCH_ALLOWED = $scope.server.AUTOCLUTCH_ALLOWED ? 1 : 0;
+				data.STABILITY_ALLOWED = $scope.server.STABILITY_ALLOWED ? 1 : 0;
+				data.TYRE_BLANKETS_ALLOWED = $scope.server.TYRE_BLANKETS_ALLOWED ? 1 : 0;
+				data.FORCE_VIRTUAL_MIRROR = $scope.server.FORCE_VIRTUAL_MIRROR ? 1 : 0;
+				
+				var saved = true;
+				
+				ServerService.SaveServerDetails(data, function(result) {
+					if (!(result[0] === 'O' && result[1] === 'K')) {
+						saved = false;
+					}
+				});
+				
+				if(!$scope.dynamicTrackEnabled) {
+					$scope.dynamicTrack = {};
 				}
-			});
-			
-			if(!$scope.dynamicTrackEnabled) {
-				$scope.dynamicTrack = {};
-			}
-			
-			DynamicTrackService.SaveDynamicTrackDetails($scope.dynamicTrack, function(result) {
-				if (!(result[0] === 'O' && result[1] === 'K')) {
-					saved = false;
+				
+				DynamicTrackService.SaveDynamicTrackDetails($scope.dynamicTrack, function(result) {
+					if (!(result[0] === 'O' && result[1] === 'K')) {
+						saved = false;
+					}
+				});
+				
+				if (saved) {
+					createAlert('success', 'Saved successfully', true);
+				} else {
+					reateAlert('success', 'Save failed', true);
 				}
-			});
-			
-			if (saved) {
-				createAlert('success', 'Saved successfully', true);
-			} else {
-				reateAlert('success', 'Save failed', true);
+			} catch (error) {
+				console.log('Error - ' + error);
 			}
 		}
 		
@@ -526,17 +539,23 @@ angular.module('acServerManager')
 				return; 
 			}
 			
-			if (!$scope.server.UDP_PLUGIN_LOCAL_PORT) {
-				$scope.server.UDP_PLUGIN_LOCAL_PORT = '';
+			try {
+				
+				if (!$scope.server.UDP_PLUGIN_LOCAL_PORT) {
+					$scope.server.UDP_PLUGIN_LOCAL_PORT = '';
+				}
+			
+				ServerService.SaveServerDetails($scope.server, function(result) {
+					if (result[0] === 'O' && result[1] === 'K') {
+						createAlert('success', 'Saved successfully', true);
+					} else {
+						createAlert('warning', 'Save failed', true);
+					}
+				});
+			} catch (error) {
+				console.log('Error - ' + error);
 			}
 			
-			ServerService.SaveServerDetails($scope.server, function(result) {
-				if (result[0] === 'O' && result[1] === 'K') {
-					createAlert('success', 'Saved successfully', true);
-				} else {
-					createAlert('warning', 'Save failed', true);
-				}
-			});
 		}
 		
 		function createAlert(type, msg, autoClose) {
