@@ -30,43 +30,71 @@ var sTrackerServerPid;
 var acServerLogName;
 
 var currentSession;
-
-var config =  multiLine.read(serverPath + 'cfg/server_cfg.ini', {encoding: 'utf8'});
-var entryList =  multiLine.read(serverPath + 'cfg/entry_list.ini', {encoding: 'utf8'});
-var ksTyres =  multiLine.read(serverPath + 'manager/ks_tyres.ini', {encoding: 'utf8'});
-
 var modTyres;
+
+try {
+	var config =  multiLine.read(serverPath + 'cfg/server_cfg.ini', {encoding: 'utf8'});
+	var entryList =  multiLine.read(serverPath + 'cfg/entry_list.ini', {encoding: 'utf8'});
+	var ksTyres =  multiLine.read(serverPath + 'manager/ks_tyres.ini', {encoding: 'utf8'});
+} catch (e) {
+	console.log('Error - ' + e);
+}
+
 fs.exists(serverPath + 'manager/mod_tyres.ini', function (exists) {
-	if (exists) {
-		modTyres = ini.parse(fs.readFileSync(serverPath + 'manager/mod_tyres.ini', 'utf-8'));
+	try {
+		if (exists) {
+			modTyres = ini.parse(fs.readFileSync(serverPath + 'manager/mod_tyres.ini', 'utf-8'));
+		}
+	} catch (e) {
+		console.log('Error - ' + e);
 	}
 });
 
 function saveConfig() {
-	fs.writeFileSync(serverPath + 'cfg/server_cfg.ini', ini.stringify(config).replace(/\\/gi,''));
+	try {
+		fs.writeFileSync(serverPath + 'cfg/server_cfg.ini', ini.stringify(config).replace(/\\/gi,''));
+	} catch (e) {
+		console.log('Error - ' + e);
+	}
 }
 
 function saveEntryList() {
-	fs.writeFileSync(serverPath + 'cfg/entry_list.ini', ini.stringify(entryList).replace(/\\/gi,''));
+	try {
+		fs.writeFileSync(serverPath + 'cfg/entry_list.ini', ini.stringify(entryList).replace(/\\/gi,''));
+	} catch (e) {
+		console.log('Error - ' + e);
+	}
 }
 
 function getDirectories(srcpath) {
-	return fs.readdirSync(srcpath).filter(function (file) {
-		return fs.statSync(srcpath + "/" + file).isDirectory();
-	});
+	try {
+		return fs.readdirSync(srcpath).filter(function (file) {
+			return fs.statSync(srcpath + "/" + file).isDirectory();
+		});
+	} catch (e) {
+		console.log('Error - ' + e);
+	}
 }
 
 function getDateTimeString() {
-	var d = new Date();
-	return d.getFullYear() + ('0' + d.getMonth()).slice(-2) + ('0' + d.getDate()).slice(-2) + '_' + ('0' + d.getHours()).slice(-2) + ('0' + d.getMinutes()).slice(-2) + ('0' + d.getSeconds()).slice(-2);
+	try {
+		var d = new Date();
+		return d.getFullYear() + ('0' + d.getMonth()).slice(-2) + ('0' + d.getDate()).slice(-2) + '_' + ('0' + d.getHours()).slice(-2) + ('0' + d.getMinutes()).slice(-2) + ('0' + d.getSeconds()).slice(-2);
+	} catch (e) {
+		console.log('Error - ' + e);
+	}
 }
 
 function writeLogFile(filename, message) {
-	fs.appendFile(__dirname + '/logs/' + filename, message + '\r\n', function (err) {
-		if (err) {
-			throw (err);
-		}
-	});
+	try {
+		fs.appendFile(__dirname + '/logs/' + filename, message + '\r\n', function (err) {
+			if (err) {
+				throw (err);
+			}
+		});
+	} catch (error) {
+		console.log('Error - ' + e);
+	}	
 }
 
 var app = express();
@@ -130,6 +158,7 @@ app.post('/api/server', function (req, res) {
 		for (var param in req.body) {
 			config.SERVER[param.toUpperCase()] = req.body[param];
 		}
+		
 		saveConfig();
 		res.status(200);
 		res.send('OK');
