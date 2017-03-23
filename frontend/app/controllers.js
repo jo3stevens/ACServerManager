@@ -108,6 +108,12 @@ angular.module('acServerManager')
 				hideWaitTime: true,
 				hideCanJoin: true,
 				hideJoinType: true,
+				hideWaitPercentage: true,
+				hideExtraLap: true,
+				hideRaceOverTime: true,
+				hideRacePitWindowStart: true,
+				hideRacePitWindowEnd: true,
+				hideReversedGridRacePositions: true,
 				enabled: data.NAME !== undefined,
 				data: data
 			});
@@ -120,9 +126,15 @@ angular.module('acServerManager')
 				type: 'Practice',
 				hideTime: false,
 				hideLaps: true,
-				hideWaitTime: false,
+				hideWaitTime: true,
 				hideCanJoin: false,
 				hideJoinType: true,
+				hideWaitPercentage: true,
+				hideExtraLap: true,
+				hideRaceOverTime: true,
+				hideRacePitWindowStart: true,
+				hideRacePitWindowEnd: true,
+				hideReversedGridRacePositions: true,
 				enabled: data.NAME !== undefined,
 				data: data
 			});
@@ -134,9 +146,15 @@ angular.module('acServerManager')
 				type: 'Qualify',
 				hideTime: false,
 				hideLaps: true,
-				hideWaitTime: false,
+				hideWaitTime: true,
 				hideCanJoin: false,
 				hideJoinType: true,
+				hideWaitPercentage: false,
+				hideExtraLap: true,
+				hideRaceOverTime: true,
+				hideRacePitWindowStart: true,
+				hideRacePitWindowEnd: true,
+				hideReversedGridRacePositions: true,
 				enabled: data.NAME !== undefined,
 				data: data
 			});
@@ -145,11 +163,17 @@ angular.module('acServerManager')
 		RaceService.GetRaceDetails(function (data) {
 			$scope.sessions.push({
 				type: 'Race',
-				hideTime: true,
+				hideTime: false,
 				hideLaps: false,
 				hideWaitTime: false,
 				hideCanJoin: true,
 				hideJoinType: false,
+				hideWaitPercentage: true,
+				hideExtraLap: false,
+				hideRaceOverTime: false,
+				hideRacePitWindowStart: false,
+				hideRacePitWindowEnd: false,
+				hideReversedGridRacePositions: false,
 				enabled: data.NAME !== undefined,
 				data: data
 			});
@@ -172,6 +196,7 @@ angular.module('acServerManager')
 				$scope.selectedTyres = data.LEGAL_TYRES.split(';');
 			
 				data.LOOP_MODE = data.LOOP_MODE == 1;
+				data.LOCKED_ENTRY_LIST = data.LOCKED_ENTRY_LIST == 1;
 				data.PICKUP_MODE_ENABLED = data.PICKUP_MODE_ENABLED == 1;
 				data.REGISTER_TO_LOBBY = data.REGISTER_TO_LOBBY == 1;
 			
@@ -310,6 +335,7 @@ angular.module('acServerManager')
 			try {
 				var data = angular.copy($scope.server);
 			
+				data.LOCKED_ENTRY_LIST = $scope.server.LOCKED_ENTRY_LIST ? 1 : 0;
 				data.LOOP_MODE = $scope.server.LOOP_MODE ? 1 : 0;
 				data.PICKUP_MODE_ENABLED = $scope.server.PICKUP_MODE_ENABLED ? 1 : 0;
 				data.REGISTER_TO_LOBBY = $scope.server.REGISTER_TO_LOBBY ? 1 : 0;

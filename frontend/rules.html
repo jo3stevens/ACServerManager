@@ -201,13 +201,11 @@
 										<div class="form-group" show-errors>
 											<label>Allowed Tyres Out</label>
 											<select class="form-control" ng-model="server.ALLOWED_TYRES_OUT">
-												<option value="0">0</option>
+												<option value="-1">Disabled</option>
 												<option value="1">1</option>
 												<option value="2">2</option>
 												<option value="3">3</option>
-												<option value="5">5</option>
-												<option value="5">7</option>
-												<option value="5">10</option>
+												<option value="4">4</option>
 											</select>
 										</div>
 									</div>
@@ -232,6 +230,25 @@
 											<input class="form-control" name="tyre_wear_rate" ng-model="server.TYRE_WEAR_RATE" required/>
 										</div>
 									</div>
+									
+									<div class="col-sm-3">
+										<div class="form-group" show-errors>
+											<label>Race Gas Penalty</label>
+											<select class="form-control" ng-model="server.RACE_GAS_PENALTY_DISABLED">
+												<option value="0">Enabled</option>
+												<option value="1">Disabled</option>
+											</select>
+										 </div>
+									</div>
+									
+									<div class="col-sm-3" show-errors>
+										<div class="form-group">
+											<label>Max Contacts Per KM</label>
+											<input class="form-control" name="max_contacts_per_km" ng-model="server.MAX_CONTACTS_PER_KM" required>
+										</div>
+									</div>
+
+									
 								</div>
 							</fieldset>
 							
