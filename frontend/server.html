@@ -274,6 +274,27 @@
 											</div>						
 										</div>
 										
+										<div class="col-sm-3" ng-hide="selectedSession.hideWaitPercentage">
+											<div class="form-group">
+												<label>Wait Percentage</label>
+												<input class="form-control" name="qualify_max_wait_perc" ng-model="server.QUALIFY_MAX_WAIT_PERC">
+											</div>						
+										</div>
+										
+										<div class="col-sm-3" ng-hide="selectedSession.hideRacePitWindowStart">
+											<div class="form-group">
+												<label>Race Pit Window Start</label>
+												<input class="form-control" name="race_pit_window_start" ng-model="server.RACE_PIT_WINDOW_START">
+											</div>						
+										</div>
+										
+										<div class="col-sm-3" ng-hide="selectedSession.hideRacePitWindowEnd">
+											<div class="form-group">
+												<label>Race Pit Window End</label>
+												<input class="form-control" name="race_pit_window_end" ng-model="server.RACE_PIT_WINDOW_END">
+											</div>						
+										</div>
+										
 										<div class="col-sm-3" ng-hide="selectedSession.hideExtraLap">
 											<div class="form-group">
 												<label>Extra Lap</label>
@@ -283,31 +304,20 @@
 												</select>
 											</div>						
 										</div>
-										<div class="col-sm-3" ng-hide="selectedSession.hideWaitPercentage">
+										
+										<div class="col-sm-3" ng-hide="selectedSession.hideRaceOverTime">
 											<div class="form-group">
-												<label>Wait Percentage</label>
-												<input class="form-control" name="qualify_max_wait_perc" ng-model="server.QUALIFY_MAX_WAIT_PERC">
+												<label>Race Over Time</label>
+												<input class="form-control" name="session_race_over_time" ng-model="server.RACE_OVER_TIME"/>
 											</div>						
 										</div>
+										
 										<div class="col-sm-3" ng-hide="selectedSession.hideReversedGridRacePositions">
 											<div class="form-group">
 												<label>Reversed Grid Race Positions</label>
 												<input class="form-control" name="reversed_grid_race_positions" ng-model="server.REVERSED_GRID_RACE_POSITIONS">
 											</div>						
 										</div>
-										<div class="col-sm-3" ng-hide="selectedSession.hideRacePitWindowStart">
-											<div class="form-group">
-												<label>Race Pit Window Start</label>
-												<input class="form-control" name="race_pit_window_start" ng-model="server.RACE_PIT_WINDOW_START">
-											</div>						
-										</div>
-										<div class="col-sm-3" ng-hide="selectedSession.hideRacePitWindowEnd">
-											<div class="form-group">
-												<label>Race Pit Window End</label>
-												<input class="form-control" name="race_pit_window_end" ng-model="server.RACE_PIT_WINDOW_END">
-											</div>						
-										</div>
-
 										
 										<div class="col-sm-3" ng-hide="selectedSession.hideCanJoin">
 											<div class="checkbox top30">
@@ -316,17 +326,10 @@
 												</label>
 											</div>						
 										</div>
+										
 									</div>
 								</div>
 								
-								<div class="row">
-									<div class="col-sm-2">
-										<div class="form-group">
-											<label>Race Over Time</label>
-											<input class="form-control" name="session_race_over_time" ng-model="server.RACE_OVER_TIME"/>
-										</div>						
-									</div>
-								</div>
 							</fieldset>
 
 							<fieldset class="top10">
