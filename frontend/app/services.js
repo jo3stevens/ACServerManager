@@ -188,6 +188,12 @@ angular.module('acServerManager.services', ['ngResource']).
                     callback(result);
                 });
             },
+			RestartACServer: function (callback) {
+                var resource = $resource('/api/acserver/restart');
+                var result = resource.save(function () {
+                    callback(result);
+                });
+            },
 			STrackerServerStatus: function(callback) {
                 var resource = $resource('/api/strackerserver/status');
                 var result = resource.get(function() {
@@ -202,6 +208,12 @@ angular.module('acServerManager.services', ['ngResource']).
             },
 			StopSTrackerServer: function (callback) {
                 var resource = $resource('/api/strackerserver/stop');
+                var result = resource.save(function () {
+                    callback(result);
+                });
+            },
+			RestartSTrackerServer: function (callback) {
+                var resource = $resource('/api/strackerserver/restart');
                 var result = resource.save(function () {
                     callback(result);
                 });

@@ -1,8 +1,8 @@
 module.exports = {
-  serverPath: 'd:/Games/SteamLibrary/steamapps/common/assettocorsa/server/',
+  serverPath: '../server/',
   contentPath: '',
-  sTrackerPath: 'd:/Games/SteamLibrary/steamapps/common/assettocorsa/stracker/',
+  sTrackerPath: '',
   username: '',
   password: '',
-  port: 3000
+  port: 42555
 };

@@ -42,6 +42,14 @@ angular.module('acServerManager')
 			})
 		}
 		
+		$scope.restartACServer = function() {
+			ProcessService.RestartACServer(function(result) {
+				if (!(result[0] === 'O' && result[1] === 'K')) {
+					createAlert('warning', 'Failed to restart AC server', true)
+				}
+			})
+		}
+		
 		$scope.startSTrackerServer = function() {
 			ProcessService.StartSTrackerServer(function(result) {
 				if (!(result[0] === 'O' && result[1] === 'K')) {
@@ -54,6 +62,14 @@ angular.module('acServerManager')
 			ProcessService.StopSTrackerServer(function(result) {
 				if (!(result[0] === 'O' && result[1] === 'K')) {
 					createAlert('warning', 'Failed to stop stracker', true)
+				}
+			})
+		}
+		
+		$scope.restartSTrackerServer = function() {
+			ProcessService.RestartSTrackerServer(function(result) {
+				if (!(result[0] === 'O' && result[1] === 'K')) {
+					createAlert('warning', 'Failed to restart stracker', true)
 				}
 			})
 		}
@@ -92,6 +108,12 @@ angular.module('acServerManager')
 				hideWaitTime: true,
 				hideCanJoin: true,
 				hideJoinType: true,
+				hideWaitPercentage: true,
+				hideExtraLap: true,
+				hideRaceOverTime: true,
+				hideRacePitWindowStart: true,
+				hideRacePitWindowEnd: true,
+				hideReversedGridRacePositions: true,
 				enabled: data.NAME !== undefined,
 				data: data
 			});
@@ -104,9 +126,15 @@ angular.module('acServerManager')
 				type: 'Practice',
 				hideTime: false,
 				hideLaps: true,
-				hideWaitTime: false,
+				hideWaitTime: true,
 				hideCanJoin: false,
 				hideJoinType: true,
+				hideWaitPercentage: true,
+				hideExtraLap: true,
+				hideRaceOverTime: true,
+				hideRacePitWindowStart: true,
+				hideRacePitWindowEnd: true,
+				hideReversedGridRacePositions: true,
 				enabled: data.NAME !== undefined,
 				data: data
 			});
@@ -118,9 +146,15 @@ angular.module('acServerManager')
 				type: 'Qualify',
 				hideTime: false,
 				hideLaps: true,
-				hideWaitTime: false,
+				hideWaitTime: true,
 				hideCanJoin: false,
 				hideJoinType: true,
+				hideWaitPercentage: false,
+				hideExtraLap: true,
+				hideRaceOverTime: true,
+				hideRacePitWindowStart: true,
+				hideRacePitWindowEnd: true,
+				hideReversedGridRacePositions: true,
 				enabled: data.NAME !== undefined,
 				data: data
 			});
@@ -129,11 +163,17 @@ angular.module('acServerManager')
 		RaceService.GetRaceDetails(function (data) {
 			$scope.sessions.push({
 				type: 'Race',
-				hideTime: true,
+				hideTime: false,
 				hideLaps: false,
 				hideWaitTime: false,
 				hideCanJoin: true,
 				hideJoinType: false,
+				hideWaitPercentage: true,
+				hideExtraLap: false,
+				hideRaceOverTime: false,
+				hideRacePitWindowStart: false,
+				hideRacePitWindowEnd: false,
+				hideReversedGridRacePositions: false,
 				enabled: data.NAME !== undefined,
 				data: data
 			});
@@ -148,19 +188,26 @@ angular.module('acServerManager')
 		});
 		
 		ServerService.GetServerDetails(function (data) {
-			$scope.selectedCars = data.CARS.split(';');
-			$scope.selectedTracks = data.TRACK; //TODO: Multi-track
-			$scope.selectedTyres = data.LEGAL_TYRES.split(';');
-			
-			data.LOOP_MODE = data.LOOP_MODE == 1;
-			data.PICKUP_MODE_ENABLED = data.PICKUP_MODE_ENABLED == 1;
-			data.REGISTER_TO_LOBBY = data.REGISTER_TO_LOBBY == 1;
-			
-			var time = getTime(data.SUN_ANGLE);
-			$scope.hours = time.getHours();
-			$scope.mins = time.getMinutes();
-			
 			$scope.server = data;
+
+			try {
+				$scope.selectedCars = data.CARS.split(';');
+				$scope.selectedTracks = data.TRACK; //TODO: Multi-track
+				$scope.selectedTyres = data.LEGAL_TYRES.split(';');
+			
+				data.LOOP_MODE = data.LOOP_MODE == 1;
+				data.LOCKED_ENTRY_LIST = data.LOCKED_ENTRY_LIST == 1;
+				data.PICKUP_MODE_ENABLED = data.PICKUP_MODE_ENABLED == 1;
+				data.REGISTER_TO_LOBBY = data.REGISTER_TO_LOBBY == 1;
+			
+				if(data.SUN_ANGLE > 0){
+					var time = getTime(data.SUN_ANGLE);
+					$scope.hours = time.getHours();
+					$scope.mins = time.getMinutes();
+				}
+			} catch (e) {
+				console.log('Error - ' + e);
+			}
 			
 			$scope.carsChanged();
 			$scope.trackChanged();
@@ -183,60 +230,64 @@ angular.module('acServerManager')
 				$scope.tyres = [];
 				return;
 			}
-			
-			TyreService.GetTyres($scope.selectedCars.join(','), function(result) {				
-				//Restructure the object to something that is nicer to format
-				var tyreTypes = {};
-				angular.forEach(result, function(value, key) {
-					if (key !== '$promise' ) {
-						var car = key;
-						angular.forEach(value, function(value, key) {
-							if (!tyreTypes[key]) {
-								tyreTypes[key] = [];
-							}
-							
-							var desc = findInArray(tyreTypes[key], { desc: value });
-							if (desc == null) {
-								desc = { desc: value };
-								desc.cars = [];
-								tyreTypes[key].push(desc);
-							}
 
-							desc.cars.push(car);
-							
+			try {
+				TyreService.GetTyres($scope.selectedCars.join(','), function(result) {				
+					//Restructure the object to something that is nicer to format
+					var tyreTypes = {};
+					angular.forEach(result, function(value, key) {
+						if (key !== '$promise' ) {
+							var car = key;
+							angular.forEach(value, function(value, key) {
+								if (!tyreTypes[key]) {
+									tyreTypes[key] = [];
+								}
+								
+								var desc = findInArray(tyreTypes[key], { desc: value });
+								if (desc == null) {
+									desc = { desc: value };
+									desc.cars = [];
+									tyreTypes[key].push(desc);
+								}
+
+								desc.cars.push(car);
+								
+							});
+						}
+					});
+					
+					//Use the new format to create a flat object array for binding
+					$scope.tyres = [];
+					angular.forEach(tyreTypes, function(typeValue, typeKey) {
+						var tyre = { value: typeKey };
+						var description = typeKey + ':';
+						angular.forEach(typeValue, function(descValue, descKey) {
+							description += descValue.desc + ' (';
+							angular.forEach(descValue.cars, function(carValue, carKey) {
+								description += carValue + ',';
+							});
+							description = description.substring(0, description.length - 1) + ') ';
+						});
+						tyre.description = description.trim();
+						$scope.tyres.push(tyre);
+					});
+					
+					//Remove any selected tyres that are no longer available after a car change
+					$scope.selectedTyres = $scope.selectedTyres.filter(function(element) {
+						var found = findInArray($scope.tyres, { value: element });
+						return found !== null;
+					});
+					
+					//If there are no selected tyres in cfg, this is the same as having all available
+					if ($scope.selectedTyres.length === 0) {
+						angular.forEach($scope.tyres, function(value, key) {
+							$scope.selectedTyres.push(value.value);
 						});
 					}
 				});
-				
-				//Use the new format to create a flat object array for binding
-				$scope.tyres = [];
-				angular.forEach(tyreTypes, function(typeValue, typeKey) {
-					var tyre = { value: typeKey };
-					var description = typeKey + ':';
-					angular.forEach(typeValue, function(descValue, descKey) {
-						description += descValue.desc + ' (';
-						angular.forEach(descValue.cars, function(carValue, carKey) {
-							description += carValue + ',';
-						});
-						description = description.substring(0, description.length - 1) + ') ';
-					});
-					tyre.description = description.trim();
-					$scope.tyres.push(tyre);
-				});
-				
-				//Remove any selected tyres that are no longer available after a car change
-				$scope.selectedTyres = $scope.selectedTyres.filter(function(element) {
-					var found = findInArray($scope.tyres, { value: element });
-					return found !== null;
-				});
-				
-				//If there are no selected tyres in cfg, this is the same as having all available
-				if ($scope.selectedTyres.length === 0) {
-					angular.forEach($scope.tyres, function(value, key) {
-						$scope.selectedTyres.push(value.value);
-					});
-				}
-			});
+			} catch (e) {
+				console.log('Error - ' + e);
+			}
 		}
 		
 		$scope.tyresChanged = function() {
@@ -281,98 +332,104 @@ angular.module('acServerManager')
 				return; 
 			}
 			
-			var data = angular.copy($scope.server);
+			try {
+				var data = angular.copy($scope.server);
 			
-			data.LOOP_MODE = $scope.server.LOOP_MODE ? 1 : 0;
-			data.PICKUP_MODE_ENABLED = $scope.server.PICKUP_MODE_ENABLED ? 1 : 0;
-			data.REGISTER_TO_LOBBY = $scope.server.REGISTER_TO_LOBBY ? 1 : 0;
-			data.CARS = $scope.selectedCars.join(';');
-			data.TRACK = $scope.selectedTracks; //TODO: Multi-track
-			data.LEGAL_TYRES = $scope.selectedTyres.length === $scope.tyres.length ? '' : $scope.selectedTyres.join(';');
-			data.SUN_ANGLE = getSunAngle($scope.hours, $scope.mins);
-			
-			var saved = true;
-			
-			ServerService.SaveServerDetails(data, function(result) {
-				if (!(result[0] === 'O' && result[1] === 'K')) {
-					saved = false;
-				}
-			});
-			
-			var booking = findInArray($scope.sessions, { type: 'Booking' });
-			if (booking !== null) {
-				if(!booking.enabled) {
-					booking.data = {};
+				data.LOCKED_ENTRY_LIST = $scope.server.LOCKED_ENTRY_LIST ? 1 : 0;
+				data.LOOP_MODE = $scope.server.LOOP_MODE ? 1 : 0;
+				data.PICKUP_MODE_ENABLED = $scope.server.PICKUP_MODE_ENABLED ? 1 : 0;
+				data.REGISTER_TO_LOBBY = $scope.server.REGISTER_TO_LOBBY ? 1 : 0;
+				data.CARS = $scope.selectedCars.join(';');
+				data.TRACK = $scope.selectedTracks; //TODO: Multi-track
+				data.SUN_ANGLE = getSunAngle($scope.hours, $scope.mins);
+
+				if (typeof $scope.tyres.length === 'undefined' || !$scope.tyres.length){
+					data.LEGAL_TYRES = $scope.selectedTyres.length === $scope.tyres.length ? '' : $scope.selectedTyres.join(';');
 				}
 				
-				BookService.SaveBookingDetails(booking.data, function(result) {
+				var saved = true;
+				
+				ServerService.SaveServerDetails(data, function(result) {
 					if (!(result[0] === 'O' && result[1] === 'K')) {
 						saved = false;
 					}
 				});
-			}
-			
-			var practice = findInArray($scope.sessions, { type: 'Practice' });
-			if (practice !== null) {
-				if(!practice.enabled) {
-					practice.data = {};
-				}
-				else {
-					practice.data.IS_OPEN = practice.data.IS_OPEN ? 1 : 0;
+				
+				var booking = findInArray($scope.sessions, { type: 'Booking' });
+				if (booking !== null) {
+					if(!booking.enabled) {
+						booking.data = {};
+					}
+					
+					BookService.SaveBookingDetails(booking.data, function(result) {
+						if (!(result[0] === 'O' && result[1] === 'K')) {
+							saved = false;
+						}
+					});
 				}
 				
-				PracticeService.SavePracticeDetails(practice.data, function(result) {
+				var practice = findInArray($scope.sessions, { type: 'Practice' });
+				if (practice !== null) {
+					if(!practice.enabled) {
+						practice.data = {};
+					} else {
+						practice.data.IS_OPEN = practice.data.IS_OPEN ? 1 : 0;
+					}
+					
+					PracticeService.SavePracticeDetails(practice.data, function(result) {
+						if (!(result[0] === 'O' && result[1] === 'K')) {
+							saved = false;
+						}
+					});
+				}
+				
+				var qualify = findInArray($scope.sessions, { type: 'Qualify' });
+				if (qualify !== null) {
+					if(!qualify.enabled) {
+						qualify.data = {};
+					} else {
+						qualify.data.IS_OPEN = qualify.data.IS_OPEN ? 1 : 0;
+					}
+					
+					QualifyService.SaveQualifyDetails(qualify.data, function(result) {
+						if (!(result[0] === 'O' && result[1] === 'K')) {
+							saved = false;
+						}
+					});
+				}
+				
+				var race = findInArray($scope.sessions, { type: 'Race' });
+				if (race !== null) {
+					if(!race.enabled) {
+						race.data = {};
+					}
+					
+					RaceService.SaveRaceDetails(race.data, function(result) {
+						if (!(result[0] === 'O' && result[1] === 'K')) {
+							saved = false;
+						}
+					});
+				}
+				
+				WeatherService.SaveWeather($scope.weatherSettings, function(result) {
 					if (!(result[0] === 'O' && result[1] === 'K')) {
 						saved = false;
 					}
 				});
-			}
-			
-			var qualify = findInArray($scope.sessions, { type: 'Qualify' });
-			if (qualify !== null) {
-				if(!qualify.enabled) {
-					qualify.data = {};
-				}
-				else {
-					qualify.data.IS_OPEN = qualify.data.IS_OPEN ? 1 : 0;
-				}
 				
-				QualifyService.SaveQualifyDetails(qualify.data, function(result) {
-					if (!(result[0] === 'O' && result[1] === 'K')) {
-						saved = false;
-					}
-				});
-			}
-			
-			var race = findInArray($scope.sessions, { type: 'Race' });
-			if (race !== null) {
-				if(!race.enabled) {
-					race.data = {};
+				if (saved) {
+					createAlert('success', 'Saved successfully', true);
+				} else {
+					createAlert('warning', 'Save failed', true);
 				}
-				
-				RaceService.SaveRaceDetails(race.data, function(result) {
-					if (!(result[0] === 'O' && result[1] === 'K')) {
-						saved = false;
-					}
-				});
-			}
-			
-			WeatherService.SaveWeather($scope.weatherSettings, function(result) {
-				if (!(result[0] === 'O' && result[1] === 'K')) {
-					saved = false;
-				}
-			});
-			
-			if (saved) {
-				createAlert('success', 'Saved successfully', true);
-			} else {
-				createAlert('warning', 'Save failed', true);
+			} catch (e) {
+				console.log('Error - ' + e);
 			}
 		}
 		
 		$scope.closeAlert = function(index) {
 			$scope.alerts.splice(index, 1);
-		  };
+		};
 		
 		function getTime(sunAngle) {
 			var baseLine = new Date(2000, 1, 1, 13, 0, 0, 0);
@@ -451,35 +508,39 @@ angular.module('acServerManager')
 				return; 
 			}
 			
-			var data = angular.copy($scope.server);
+			try {
+				var data = angular.copy($scope.server);
 			
-			data.AUTOCLUTCH_ALLOWED = $scope.server.AUTOCLUTCH_ALLOWED ? 1 : 0;
-			data.STABILITY_ALLOWED = $scope.server.STABILITY_ALLOWED ? 1 : 0;
-			data.TYRE_BLANKETS_ALLOWED = $scope.server.TYRE_BLANKETS_ALLOWED ? 1 : 0;
-			data.FORCE_VIRTUAL_MIRROR = $scope.server.FORCE_VIRTUAL_MIRROR ? 1 : 0;
-			
-			var saved = true;
-			
-			ServerService.SaveServerDetails(data, function(result) {
-				if (!(result[0] === 'O' && result[1] === 'K')) {
-					saved = false;
+				data.AUTOCLUTCH_ALLOWED = $scope.server.AUTOCLUTCH_ALLOWED ? 1 : 0;
+				data.STABILITY_ALLOWED = $scope.server.STABILITY_ALLOWED ? 1 : 0;
+				data.TYRE_BLANKETS_ALLOWED = $scope.server.TYRE_BLANKETS_ALLOWED ? 1 : 0;
+				data.FORCE_VIRTUAL_MIRROR = $scope.server.FORCE_VIRTUAL_MIRROR ? 1 : 0;
+				
+				var saved = true;
+				
+				ServerService.SaveServerDetails(data, function(result) {
+					if (!(result[0] === 'O' && result[1] === 'K')) {
+						saved = false;
+					}
+				});
+				
+				if(!$scope.dynamicTrackEnabled) {
+					$scope.dynamicTrack = {};
 				}
-			});
-			
-			if(!$scope.dynamicTrackEnabled) {
-				$scope.dynamicTrack = {};
-			}
-			
-			DynamicTrackService.SaveDynamicTrackDetails($scope.dynamicTrack, function(result) {
-				if (!(result[0] === 'O' && result[1] === 'K')) {
-					saved = false;
+				
+				DynamicTrackService.SaveDynamicTrackDetails($scope.dynamicTrack, function(result) {
+					if (!(result[0] === 'O' && result[1] === 'K')) {
+						saved = false;
+					}
+				});
+				
+				if (saved) {
+					createAlert('success', 'Saved successfully', true);
+				} else {
+					reateAlert('success', 'Save failed', true);
 				}
-			});
-			
-			if (saved) {
-				createAlert('success', 'Saved successfully', true);
-			} else {
-				reateAlert('success', 'Save failed', true);
+			} catch (e) {
+				console.log('Error - ' + e);
 			}
 		}
 		
@@ -511,17 +572,23 @@ angular.module('acServerManager')
 				return; 
 			}
 			
-			if (!$scope.server.UDP_PLUGIN_LOCAL_PORT) {
-				$scope.server.UDP_PLUGIN_LOCAL_PORT = '';
+			try {
+				
+				if (!$scope.server.UDP_PLUGIN_LOCAL_PORT) {
+					$scope.server.UDP_PLUGIN_LOCAL_PORT = '';
+				}
+			
+				ServerService.SaveServerDetails($scope.server, function(result) {
+					if (result[0] === 'O' && result[1] === 'K') {
+						createAlert('success', 'Saved successfully', true);
+					} else {
+						createAlert('warning', 'Save failed', true);
+					}
+				});
+			} catch (e) {
+				console.log('Error - ' + e);
 			}
 			
-			ServerService.SaveServerDetails($scope.server, function(result) {
-				if (result[0] === 'O' && result[1] === 'K') {
-					createAlert('success', 'Saved successfully', true);
-				} else {
-					createAlert('warning', 'Save failed', true);
-				}
-			});
 		}
 		
 		function createAlert(type, msg, autoClose) {
@@ -556,10 +623,14 @@ angular.module('acServerManager')
 			}
 		});
 		
-		ServerService.GetServerDetail('cars', function (data) {		
-			$scope.cars = data.value.split(';');
-			$scope.newEntry.MODEL = $scope.cars[0];
-			$scope.selectedCarChanged();
+		ServerService.GetServerDetail('cars', function (data) {
+			try {
+				$scope.cars = data.value.split(';');
+				$scope.newEntry.MODEL = $scope.cars[0];
+				$scope.selectedCarChanged();
+			} catch (e) {
+				console.log('Error - ' + e);
+			}
 		});
 		
 		EntryListService.GetEntryList(function (data) {
