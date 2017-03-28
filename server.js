@@ -14,25 +14,9 @@ var settings = require('./settings');
 var username = settings.username;
 var password = settings.password;
 
-var sTrackerPath = settings.sTrackerPath;
-if (settings.sTrackerPath && settings.sTrackerPath !== '') {
-	if(sTrackerPath.substr(-1) !== '/'){
-		sTrackerPath = sTrackerPath.concat('/');
-	}
-}
-
-var serverPath = settings.serverPath;
-if(serverPath.substr(-1) !== '/'){
-	serverPath = serverPath.concat('/');
-}
-
-var contentPath = serverPath + 'content';
-if (settings.contentPath && settings.contentPath !== '') {
-	contentPath = settings.contentPath;
-	if(contentPath.substr(-1) === "/") {
-		contentPath = contentPath.substring(0, contentPath.length - 1);
-	}
-}
+var sTrackerPath = buildSTrackerPath(settings.sTrackerPath);
+var serverPath = buildServerPath(settings.serverPath);
+var contentPath = buildContentPath(serverPath);
 
 var isRunningOnWindows = /^win/.test(process.platform);
 
@@ -104,6 +88,33 @@ function writeLogFile(filename, message) {
 	} catch (e) {
 		console.log('Error - ' + e);
 	}	
+}
+
+function buildSTrackerPath(sTrackerPath) {
+	if (sTrackerPath && sTrackerPath !== '') {
+		if(sTrackerPath.substr(-1) !== '/'){
+			sTrackerPath = sTrackerPath + '/';
+		}
+	}
+	return sTrackerPath;
+}
+
+function buildServerPath(serverPath) {
+	if(serverPath.substr(-1) !== '/'){
+		serverPath = serverPath + '/';
+	}
+	return serverPath;
+}
+
+function buildContentPath(serverPath) {
+	var contentPath = serverPath + 'content';
+	if (settings.contentPath && settings.contentPath !== '') {
+		contentPath = settings.contentPath;
+		if(contentPath.substr(-1) === '/') {
+			contentPath = contentPath.substring(0, contentPath.length - 1);
+		}
+	}
+	return contentPath;
 }
 
 var app = express();
