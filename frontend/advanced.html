@@ -157,7 +157,7 @@
 								<div class="col-sm-4">
 									<div class="form-group" show-errors>
 										<label>Max Ballast (Kg)</label>
-										<input class="form-control" type="number" min="0" name="max_ballast" ng-model="server.MAX_BALLAST_KG" required/>
+										<input class="form-control" type="number" min="0" string-to-number name="max_ballast" ng-model="server.MAX_BALLAST_KG" required/>
 									</div>
 								</div>
 								
@@ -176,7 +176,7 @@
 									<div class="col-sm-4">
 										<div class="form-group" show-errors>
 											<label>UDP Local Port</label>
-											<input class="form-control" type="number" min="0" name="udp_local_port" ng-model="server.UDP_PLUGIN_LOCAL_PORT"/>
+											<input class="form-control" type="number" min="0" string-to-number name="udp_local_port" ng-model="server.UDP_PLUGIN_LOCAL_PORT"/>
 										</div>
 									</div>
 									
