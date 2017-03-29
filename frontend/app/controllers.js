@@ -606,6 +606,7 @@ angular.module('acServerManager')
 		$scope.entryList = [];
 		$scope.drivers =[];
 		$scope.amount = 1;
+		$scope.random = false;
 		$scope.newEntry = {
 			DRIVERNAME: '',
 			TEAM: '',

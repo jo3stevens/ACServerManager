@@ -86,3 +86,11 @@ body { padding-top: 0px;}
 .table-upgrade td:nth-child(3){
     text-align: center;
 }
+
+.checkbox, .checkbox label {
+	padding-left: 0px; !important
+}
+
+.checkbox {
+	margin-top: 0px; !important
+}
