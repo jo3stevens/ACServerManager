@@ -468,139 +468,6 @@ angular.module('acServerManager')
 			return null;
 		}
 	})
-	.controller('RulesCtrl', function($scope, $timeout, ServerService, DynamicTrackService) {
-		$scope.alerts = [];
-		
-		$scope.assistOptions = [
-			{
-				value: '0',
-				name: 'Force Off'
-			},
-			{
-				value: '1',
-				name: 'Factory'
-			},
-			{
-				value: '2',
-				name: 'Force On'
-			}
-		];
-		
-		ServerService.GetServerDetails(function (data) {
-			data.AUTOCLUTCH_ALLOWED = data.AUTOCLUTCH_ALLOWED == 1;
-			data.STABILITY_ALLOWED = data.STABILITY_ALLOWED == 1;
-			data.TYRE_BLANKETS_ALLOWED = data.TYRE_BLANKETS_ALLOWED == 1;
-			data.FORCE_VIRTUAL_MIRROR = data.FORCE_VIRTUAL_MIRROR == 1;
-			
-			$scope.server = data;
-		});
-		
-		DynamicTrackService.GetDynamicTrackDetails(function (data) {
-			$scope.dynamicTrackEnabled = data.LAP_GAIN !== undefined;
-			$scope.dynamicTrack = data;
-		});
-		
-		$scope.submit = function() {
-			$scope.$broadcast('show-errors-check-validity');
-			
-			if ($scope.form.$invalid) { 
-				createAlert('warning', 'There are errors on the form', true);
-				return; 
-			}
-			
-			try {
-				var data = angular.copy($scope.server);
-			
-				data.AUTOCLUTCH_ALLOWED = $scope.server.AUTOCLUTCH_ALLOWED ? 1 : 0;
-				data.STABILITY_ALLOWED = $scope.server.STABILITY_ALLOWED ? 1 : 0;
-				data.TYRE_BLANKETS_ALLOWED = $scope.server.TYRE_BLANKETS_ALLOWED ? 1 : 0;
-				data.FORCE_VIRTUAL_MIRROR = $scope.server.FORCE_VIRTUAL_MIRROR ? 1 : 0;
-				
-				var saved = true;
-				
-				ServerService.SaveServerDetails(data, function(result) {
-					if (!(result[0] === 'O' && result[1] === 'K')) {
-						saved = false;
-					}
-				});
-				
-				if(!$scope.dynamicTrackEnabled) {
-					$scope.dynamicTrack = {};
-				}
-				
-				DynamicTrackService.SaveDynamicTrackDetails($scope.dynamicTrack, function(result) {
-					if (!(result[0] === 'O' && result[1] === 'K')) {
-						saved = false;
-					}
-				});
-				
-				if (saved) {
-					createAlert('success', 'Saved successfully', true);
-				} else {
-					reateAlert('success', 'Save failed', true);
-				}
-			} catch (e) {
-				console.log('Error - ' + e);
-			}
-		}
-		
-		function createAlert(type, msg, autoClose) {
-			var alert = { type: type, msg: msg};
-			$scope.alerts.push(alert);
-			if (autoClose) {
-				$timeout(function(){
-					$scope.alerts.splice($scope.alerts.indexOf(alert), 1);
-				}, 3000);
-			}
-		}
-	})
-	.controller('AdvancedCtrl', function($scope, $timeout, ServerService) {	
-		$scope.alerts = [];
-		
-		ServerService.GetServerDetails(function (data) {		
-			$scope.server = data;
-			if (!$scope.server.MAX_BALLAST_KG) {
-				$scope.server.MAX_BALLAST_KG = 100;
-			}
-		});
-		
-		$scope.submit = function() {
-			$scope.$broadcast('show-errors-check-validity');
-			
-			if ($scope.form.$invalid) { 
-				createAlert('warning', 'There are errors on the form', true);
-				return; 
-			}
-			
-			try {
-				
-				if (!$scope.server.UDP_PLUGIN_LOCAL_PORT) {
-					$scope.server.UDP_PLUGIN_LOCAL_PORT = '';
-				}
-			
-				ServerService.SaveServerDetails($scope.server, function(result) {
-					if (result[0] === 'O' && result[1] === 'K') {
-						createAlert('success', 'Saved successfully', true);
-					} else {
-						createAlert('warning', 'Save failed', true);
-					}
-				});
-			} catch (e) {
-				console.log('Error - ' + e);
-			}
-			
-		}
-		
-		function createAlert(type, msg, autoClose) {
-			var alert = { type: type, msg: msg};
-			$scope.alerts.push(alert);
-			if (autoClose) {
-				$timeout(function(){
-					$scope.alerts.splice($scope.alerts.indexOf(alert), 1);
-				}, 3000);
-			}
-		}
-	})
 	.controller('EntryListCtrl', function($scope, $timeout, $filter, ServerService, CarService, EntryListService, DriverService) {	
 		$scope.alerts = [];
 		$scope.entryList = [];
@@ -758,4 +625,139 @@ angular.module('acServerManager')
 				}, 3000);
 			}
 		}
+	})
+	.controller('RulesCtrl', function($scope, $timeout, ServerService, DynamicTrackService) {
+		$scope.alerts = [];
+		
+		$scope.assistOptions = [
+			{
+				value: '0',
+				name: 'Force Off'
+			},
+			{
+				value: '1',
+				name: 'Factory'
+			},
+			{
+				value: '2',
+				name: 'Force On'
+			}
+		];
+		
+		ServerService.GetServerDetails(function (data) {
+			data.AUTOCLUTCH_ALLOWED = data.AUTOCLUTCH_ALLOWED == 1;
+			data.STABILITY_ALLOWED = data.STABILITY_ALLOWED == 1;
+			data.TYRE_BLANKETS_ALLOWED = data.TYRE_BLANKETS_ALLOWED == 1;
+			data.FORCE_VIRTUAL_MIRROR = data.FORCE_VIRTUAL_MIRROR == 1;
+			
+			$scope.server = data;
+		});
+		
+		DynamicTrackService.GetDynamicTrackDetails(function (data) {
+			$scope.dynamicTrackEnabled = data.LAP_GAIN !== undefined;
+			$scope.dynamicTrack = data;
+		});
+		
+		$scope.submit = function() {
+			$scope.$broadcast('show-errors-check-validity');
+			
+			if ($scope.form.$invalid) { 
+				createAlert('warning', 'There are errors on the form', true);
+				return; 
+			}
+			
+			try {
+				var data = angular.copy($scope.server);
+			
+				data.AUTOCLUTCH_ALLOWED = $scope.server.AUTOCLUTCH_ALLOWED ? 1 : 0;
+				data.STABILITY_ALLOWED = $scope.server.STABILITY_ALLOWED ? 1 : 0;
+				data.TYRE_BLANKETS_ALLOWED = $scope.server.TYRE_BLANKETS_ALLOWED ? 1 : 0;
+				data.FORCE_VIRTUAL_MIRROR = $scope.server.FORCE_VIRTUAL_MIRROR ? 1 : 0;
+				
+				var saved = true;
+				
+				ServerService.SaveServerDetails(data, function(result) {
+					if (!(result[0] === 'O' && result[1] === 'K')) {
+						saved = false;
+					}
+				});
+				
+				if(!$scope.dynamicTrackEnabled) {
+					$scope.dynamicTrack = {};
+				}
+				
+				DynamicTrackService.SaveDynamicTrackDetails($scope.dynamicTrack, function(result) {
+					if (!(result[0] === 'O' && result[1] === 'K')) {
+						saved = false;
+					}
+				});
+				
+				if (saved) {
+					createAlert('success', 'Saved successfully', true);
+				} else {
+					reateAlert('success', 'Save failed', true);
+				}
+			} catch (e) {
+				console.log('Error - ' + e);
+			}
+		}
+		
+		function createAlert(type, msg, autoClose) {
+			var alert = { type: type, msg: msg};
+			$scope.alerts.push(alert);
+			if (autoClose) {
+				$timeout(function(){
+					$scope.alerts.splice($scope.alerts.indexOf(alert), 1);
+				}, 3000);
+			}
+		}
+	})
+	.controller('AdvancedCtrl', function($scope, $timeout, ServerService) {	
+		$scope.alerts = [];
+		
+		ServerService.GetServerDetails(function (data) {		
+			$scope.server = data;
+			if (!$scope.server.MAX_BALLAST_KG) {
+				$scope.server.MAX_BALLAST_KG = 100;
+			}
+		});
+		
+		$scope.submit = function() {
+			$scope.$broadcast('show-errors-check-validity');
+			
+			if ($scope.form.$invalid) { 
+				createAlert('warning', 'There are errors on the form', true);
+				return; 
+			}
+			
+			try {
+				
+				if (!$scope.server.UDP_PLUGIN_LOCAL_PORT) {
+					$scope.server.UDP_PLUGIN_LOCAL_PORT = '';
+				}
+			
+				ServerService.SaveServerDetails($scope.server, function(result) {
+					if (result[0] === 'O' && result[1] === 'K') {
+						createAlert('success', 'Saved successfully', true);
+					} else {
+						createAlert('warning', 'Save failed', true);
+					}
+				});
+			} catch (e) {
+				console.log('Error - ' + e);
+			}
+			
+		}
+		
+		function createAlert(type, msg, autoClose) {
+			var alert = { type: type, msg: msg};
+			$scope.alerts.push(alert);
+			if (autoClose) {
+				$timeout(function(){
+					$scope.alerts.splice($scope.alerts.indexOf(alert), 1);
+				}, 3000);
+			}
+		}
+	})
+	.controller('HelpCtrl', function($scope) {
 	});
