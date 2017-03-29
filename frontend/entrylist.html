@@ -11,7 +11,7 @@
 		<meta name="viewport" content="width=device-width" />
 
 		<link href="css/bootstrap.min.css" rel="stylesheet" />
-		<link href="css/bootstrap-switch.css" rel="stylesheet" />
+		<link href="css/angular-toggle-switch-bootstrap-3.css" rel="stylesheet" />
 		<link href="css/animate.min.css" rel="stylesheet" />
 		<link href="css/light-bootstrap-dashboard.css" rel="stylesheet" />
 		<link href="css/style.css" rel="stylesheet" />
@@ -161,7 +161,7 @@
 										<label>Random Skin</label>
 										<div class="checkbox top30">
 											<label>
-												<input type="checkbox" bs-switch switch-size="large" ng-model="random"/>
+												<toggle-switch class="switch-large" ng-model="random"></toggle-switch>
 											</label>
 										</div>
 									</div>
@@ -172,7 +172,7 @@
 										<label>Spectator</label>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" bs-switch switch-size="large" ng-model="newEntry.SPECTATOR_MODE"/>
+												<toggle-switch class="switch-large" ng-model="newEntry.SPECTATOR_MODE"></toggle-switch>
 											</label>
 										</div>
 									</div>
@@ -364,7 +364,7 @@
 	<script src="js/angular/ui-bootstrap-tpls-0.13.0.min.js"></script>
 	<script src="js/angular/show-errors.min.js"></script>
 	<script src="app/app.js"></script>
-	<script src="app/angular-bootstrap-switch.js"></script>
+	<script src="app/angular-toggle-switch.js"></script>
 	<script src="app/services.js"></script>
 	<script src="app/controllers.js"></script>
 

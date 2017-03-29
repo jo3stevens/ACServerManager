@@ -11,7 +11,7 @@
 		<meta name="viewport" content="width=device-width" />
 
 		<link href="css/bootstrap.min.css" rel="stylesheet" />
-		<link href="css/bootstrap-switch.css" rel="stylesheet" />
+		<link href="css/angular-toggle-switch-bootstrap-3.css" rel="stylesheet" />
 		<link href="css/animate.min.css" rel="stylesheet" />
 		<link href="css/light-bootstrap-dashboard.css" rel="stylesheet" />
 		<link href="css/style.css" rel="stylesheet" />
@@ -230,7 +230,7 @@
 										<label>Enabled</label>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" bs-switch switch-size="large" ng-model="selectedSession.enabled"/>
+												<toggle-switch class="switch-large" ng-model="selectedSession.enabled"></toggle-switch>
 											</label>
 										</div>
 									</div>
@@ -363,8 +363,8 @@
 											<label>Jump Start</label>
 											<select class="form-control" name="start_rule" ng-model="server.START_RULE">
 												<option value="0">Car Locked</option>
-												<option value="1">Teleport To Pit</option>
-												<option value="2">DriveThrough</option>
+												<option value="1">Teleport to Pit</option>
+												<option value="2">Drive Through</option>
 											</select>
 										</div>
 									</div>
@@ -375,7 +375,9 @@
 									<div class="col-sm-2">
 										<label>Locked Entry List</label>
 										<div class="checkbox">
-											<label><input type="checkbox" bs-switch switch-size="large" ng-model="server.LOCKED_ENTRY_LIST"></label>
+											<label>
+												<toggle-switch class="switch-large" ng-model="server.LOCKED_ENTRY_LIST"></toggle-switch>
+											</label>
 										</div>
 									</div>
 									
@@ -383,7 +385,7 @@
 										<label>Loop Session</label>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" bs-switch switch-size="large" ng-model="server.LOOP_MODE"/>
+												<toggle-switch class="switch-large" ng-model="server.LOOP_MODE"></toggle-switch>
 											</label>
 										</div>
 									</div>
@@ -392,7 +394,7 @@
 										<label>Pickup Mode Enabled</label>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" bs-switch switch-size="large" ng-model="server.PICKUP_MODE_ENABLED"/>
+												<toggle-switch class="switch-large" ng-model="server.PICKUP_MODE_ENABLED"></toggle-switch>
 											</label>
 										</div>
 									</div>
@@ -401,7 +403,7 @@
 										<label>Show on Lobby</label>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" bs-switch switch-size="large" ng-model="server.REGISTER_TO_LOBBY"/>
+												<toggle-switch class="switch-large" ng-model="server.REGISTER_TO_LOBBY"></toggle-switch>
 											</label>
 										</div>
 									</div>
@@ -512,7 +514,7 @@
 	<script src="js/angular/ui-bootstrap-tpls-0.13.0.min.js"></script>
 	<script src="js/angular/show-errors.min.js"></script>
 	<script src="app/app.js"></script>
-	<script src="app/angular-bootstrap-switch.js"></script>
+	<script src="app/angular-toggle-switch.js"></script>
 	<script src="app/services.js"></script>
 	<script src="app/controllers.js"></script>
 

@@ -11,7 +11,7 @@
 		<meta name="viewport" content="width=device-width" />
 
 		<link href="css/bootstrap.min.css" rel="stylesheet" />
-		<link href="css/bootstrap-switch.css" rel="stylesheet" />
+		<link href="css/angular-toggle-switch-bootstrap-3.css" rel="stylesheet" />
 		<link href="css/animate.min.css" rel="stylesheet" />
 		<link href="css/light-bootstrap-dashboard.css" rel="stylesheet" />
 		<link href="css/style.css" rel="stylesheet" />
@@ -126,7 +126,7 @@
 										<label>Allow Auto Clutch</label>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" bs-switch switch-size="large" ng-model="server.AUTOCLUTCH_ALLOWED"/>
+												<toggle-switch class="switch-large" ng-model="server.AUTOCLUTCH_ALLOWED"></toggle-switch>
 											</label>
 										</div>
 									</div>
@@ -135,7 +135,7 @@
 										<label>Allow Stability Control</label>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" bs-switch switch-size="large" ng-model="server.STABILITY_ALLOWED"/>
+												<toggle-switch class="switch-large" ng-model="server.STABILITY_ALLOWED"></toggle-switch>
 											</label>
 										</div>
 									</div>
@@ -144,7 +144,7 @@
 										<label>Allow Tyre Blankets</label>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" bs-switch switch-size="large" ng-model="server.TYRE_BLANKETS_ALLOWED"/>
+												<toggle-switch class="switch-large" ng-model="server.TYRE_BLANKETS_ALLOWED"></toggle-switch>
 											</label>
 										</div>
 									</div>
@@ -153,7 +153,7 @@
 										<label>Force Virtual Mirror</label>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" bs-switch switch-size="large" ng-model="server.FORCE_VIRTUAL_MIRROR"/>
+												<toggle-switch class="switch-large" ng-model="server.FORCE_VIRTUAL_MIRROR"></toggle-switch>
 											</label>
 										</div>
 									</div>
@@ -167,7 +167,7 @@
 									<div class="col-sm-2">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" bs-switch switch-size="large" ng-model="dynamicTrackEnabled"/>
+												<toggle-switch class="switch-large" ng-model="dynamicTrackEnabled"></toggle-switch>
 											</label>
 										</div>
 									</div>
@@ -209,7 +209,7 @@
 								
 								<div class="row">
 									<div class="col-sm-3">
-										<div class="form-group" show-errors>
+										<div class="form-group">
 											<label>Allowed Tyres Out</label>
 											<select class="form-control" ng-model="server.ALLOWED_TYRES_OUT">
 												<option value="-1">Disabled</option>
@@ -221,29 +221,29 @@
 										</div>
 									</div>
 									
-									<div class="col-sm-3" show-errors>
-										<div class="form-group">
+									<div class="col-sm-3">
+										<div class="form-group" show-errors>
 											<label>Damage Multiplier</label>
 											<input class="form-control" name="damage_multiplier" ng-model="server.DAMAGE_MULTIPLIER" required/>
 										</div>
 									</div>
 									
-									<div class="col-sm-3" show-errors>
-										<div class="form-group">
+									<div class="col-sm-3">
+										<div class="form-group" show-errors>
 											<label>Fuel Rate</label>
 											<input class="form-control" name="fuel_rate" ng-model="server.FUEL_RATE" required/>
 										</div>
 									</div>
 									
-									<div class="col-sm-3" show-errors>
-										<div class="form-group">
+									<div class="col-sm-3">
+										<div class="form-group" show-errors>
 											<label>Tyre Wear Rate</label>
 											<input class="form-control" name="tyre_wear_rate" ng-model="server.TYRE_WEAR_RATE" required/>
 										</div>
 									</div>
 									
 									<div class="col-sm-3">
-										<div class="form-group" show-errors>
+										<div class="form-group">
 											<label>Race Gas Penalty</label>
 											<select class="form-control" ng-model="server.RACE_GAS_PENALTY_DISABLED">
 												<option value="0">Enabled</option>
@@ -252,8 +252,8 @@
 										 </div>
 									</div>
 									
-									<div class="col-sm-3" show-errors>
-										<div class="form-group">
+									<div class="col-sm-3">
+										<div class="form-group" show-errors>
 											<label>Max Contacts Per KM</label>
 											<input class="form-control" name="max_contacts_per_km" ng-model="server.MAX_CONTACTS_PER_KM" required>
 										</div>
@@ -313,7 +313,7 @@
 	<script src="js/angular/ui-bootstrap-tpls-0.13.0.min.js"></script>
 	<script src="js/angular/show-errors.min.js"></script>
 	<script src="app/app.js"></script>
-	<script src="app/angular-bootstrap-switch.js"></script>
+	<script src="app/angular-toggle-switch.js"></script>
 	<script src="app/services.js"></script>
 	<script src="app/controllers.js"></script>
 	

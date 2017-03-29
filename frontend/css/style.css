@@ -94,3 +94,7 @@ body { padding-top: 0px;}
 .checkbox {
 	margin-top: 0px; !important
 }
+
+.checkbox input {
+	display: block; !important
+}
