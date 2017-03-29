@@ -321,9 +321,10 @@
 										</div>
 										
 										<div class="col-sm-3" ng-hide="selectedSession.hideCanJoin">
-											<div class="checkbox top30">
+											<label>Can Join</label>
+											<div class="checkbox">
 												<label>
-													<input type="checkbox" ng-model="selectedSession.data.IS_OPEN"/> Can Join
+													<toggle-switch class="switch-large" ng-model="selectedSession.data.IS_OPEN"></toggle-switch>
 												</label>
 											</div>						
 										</div>
