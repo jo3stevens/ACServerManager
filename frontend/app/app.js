@@ -1,7 +1,7 @@
 'use strict';
 
 angular
-	.module('acServerManager', ['acServerManager.services', 'ui.bootstrap', 'ui.bootstrap.showErrors'])
+	.module('acServerManager', ['acServerManager.services', 'ui.bootstrap', 'ui.bootstrap.showErrors', 'toggle-switch'])
 	
 .directive('stringToNumber', function() {
   return {
