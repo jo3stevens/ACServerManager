@@ -882,6 +882,10 @@ app.post('/api/acserver', function (req, res) {
 			if (dataString.indexOf('OK') !== -1) {
 				acServerStatus = 1;
 			}
+			
+		   if (dataString.indexOf('stracker has been restarted') !== -1) {
+				sTrackerServerStatus = 1
+			}
 
 			if (dataString.indexOf('PAGE: /ENTRY') === -1) {
 				//Log to console and file
@@ -1022,16 +1026,12 @@ app.post('/api/strackerserver', function (req, res) {
 	try {
 		var sTracker = childProcess.spawn('stracker.exe', ['--stracker_ini', 'stracker.ini'], { cwd: sTrackerPath });
 		sTrackerServerPid = sTracker.pid;
+		
+		if (sTrackerServerStatus == 0) {
+			sTrackerServerStatus = -1;
+		}
 
 		sTracker.stdout.on('data', function (data) {
-			if (sTrackerServerStatus == 0) {
-				sTrackerServerStatus = -1;
-			}
-
-			if (String(data).indexOf('stracker.py') !== -1) {
-				sTrackerServerStatus = 1;
-			}
-
 			console.log(data);
 		});
 		sTracker.stderr.on('data', function (data) {
