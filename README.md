@@ -4,7 +4,7 @@ Web based server manager for Assetto Corsa directly manipulating the ini files o
 Start and stop the server, and stracker directly from the application, meaning you can make changes to the server configuration and restart the server directly from your browser or mobile phone.
 
 ## ACServerManager on Windows
-This is the installation guide for a Windows machine, to review the Linux installation guide go [here](https://github.com/Pringlez/ACServerManager/blob/master/README_Linux.md).
+This is the installation guide for a Windows machine, to review the Linux installation guide go [here](https://github.com/jo3stevens/ACServerManager/blob/master/README_Linux.md).
 
 ## Updates
 27/01/2017:
@@ -34,7 +34,7 @@ For cars it will copy the skins/* folder structure but not the files; this is ju
 To install Node.js, follow the installation guide on its home page [here](https://nodejs.org).
 
 ## Install ACServerManager
-Create a directory called 'acmanager', go into that directory and click [here](https://github.com/Pringlez/ACServerManager/archive/master.zip) to download the latest version. Extract 
+Create a directory called 'acmanager', go into that directory and click [here](https://github.com/jo3stevens/ACServerManager/archive/master.zip) to download the latest version. Extract 
 the contents of the zip file into the directory.
 
 ## ACServerManager Configuration
