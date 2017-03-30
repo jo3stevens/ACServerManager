@@ -4,7 +4,7 @@ Web based server manager for Assetto Corsa directly manipulating the ini files o
 Start and stop the server, and stracker directly from the application, meaning you can make changes to the server configuration and restart the server directly from your browser or mobile phone.
 
 ## ACServerManager on Linux
-This is the installation guide for a Linux machine, to review the Windows installation guide go [here](https://github.com/Pringlez/ACServerManager/blob/master/README.md).
+This is the installation guide for a Linux machine, to review the Windows installation guide go [here](https://github.com/jo3stevens/ACServerManager/blob/master/README.md).
 
 ## Updates
 27/01/2017:
@@ -44,7 +44,7 @@ To install PM2, follow the installation guide on its GitHub page [here](https://
 ## Install ACServerManager
 Create a directory called 'acmanager', cd into that directory and run this command to download the latest version:
 ```
-wget https://github.com/Pringlez/ACServerManager/archive/master.zip
+wget https://github.com/jo3stevens/ACServerManager/archive/master.zip
 ```
 Unzip the file & clean up, by running:
 ```
