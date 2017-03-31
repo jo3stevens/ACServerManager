@@ -946,69 +946,6 @@ app.post('/api/acserver/stop', function (req, res) {
 	}
 });
 
-// post restart ac server
-app.post('/api/acserver/restart', function (req, res) {
-	try {
-		if (acServerPid) {
-			if (isRunningOnWindows) {
-				console.log("Restarting Windows Server");
-				childProcess.spawn("taskkill", ["/pid", acServerPid, '/f', '/t']);
-				acServer = childProcess.spawn('acServer.exe', { cwd: serverPath });
-			} else {
-				console.log("Restarting Linux Server");
-				childProcess.spawn("kill", [acServerPid]);
-				acServer = childProcess.spawn('./acServer', { cwd: serverPath });
-			}
-
-			acServerPid = acServer.pid;
-			acServerLogName = getDateTimeString() + '_log.txt';
-			acServerStatus = 0;
-			
-			acServer.stdout.on('data', function (data) {
-				if (acServerStatus === 0) {
-					acServerStatus = -1;
-				}
-
-				var dataString = String(data);
-
-				if (dataString.indexOf('OK') !== -1) {
-					acServerStatus = 1;
-				}
-
-				if (dataString.indexOf('PAGE: /ENTRY') === -1) {
-					//Log to console and file
-					console.log(dataString);
-					writeLogFile('server_' + acServerLogName, getDateTimeString() + ': ' + data);
-
-					//Set current session
-					if (dataString.indexOf('session name') !== -1) {
-						var session = dataString.substr(dataString.indexOf('session name :') + 14);
-						currentSession = session.substr(0, dataString.indexOf('\n')).trim();
-					}
-				}
-			});
-			acServer.stderr.on('data', function (data) {
-				console.log('stderr: ' + data);
-				writeLogFile('error_' + acServerLogName, getDateTimeString() + ': ' + data);
-			});
-			acServer.on('close', function (code) {
-				console.log('closing code: ' + code);
-			});
-			acServer.on('exit', function (code) {
-				console.log('exit code: ' + code);
-				acServerStatus = 0;
-			});
-		}
-
-		res.status(200);
-		res.send("OK");
-	} catch (e) {
-		console.log('Error: POST/api/acserver/restart - ' + e);
-		res.status(500);
-		res.send('Application error');
-	}
-});
-
 // get stracker server status
 app.get('/api/strackerserver/status', function (req, res) {
 	try {
@@ -1071,46 +1008,6 @@ app.post('/api/strackerserver/stop', function (req, res) {
 	}
 });
 
-// post restart stracker server
-app.post('/api/strackerserver/restart', function (req, res) {
-	try {
-		if (sTrackerServerPid) {
-			childProcess.spawn("taskkill", ["/pid", sTrackerServerPid, '/f', '/t']);
-			var sTracker = childProcess.spawn('stracker.exe', ['--stracker_ini', 'stracker.ini'], { cwd: sTrackerPath });
-			sTrackerServerPid = sTracker.pid;
-			sTrackerServerStatus = 0;
-			
-			sTracker.stdout.on('data', function (data) {
-				if (sTrackerServerStatus == 0) {
-					sTrackerServerStatus = -1;
-				}
-
-				if (String(data).indexOf('stracker.py') !== -1) {
-					sTrackerServerStatus = 1;
-				}
-
-				console.log(data);
-			});
-			sTracker.stderr.on('data', function (data) {
-				console.log('stderr: ' + data);
-			});
-			sTracker.on('close', function (code) {
-				console.log('closing code: ' + code);
-			});
-			sTracker.on('exit', function (code) {
-				console.log('exit code: ' + code);
-				sTrackerServerStatus = 0;
-			});
-		}
-
-		res.status(200);
-		res.send("OK");
-	} catch (e) {
-		console.log('Error: POST/api/strackerserver/restart - ' + e);
-		res.status(500);
-		res.send('Application error');
-	}
-});
 
 // get fronend index page
 app.get('*', function (req, res) {

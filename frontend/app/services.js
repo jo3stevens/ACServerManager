@@ -168,7 +168,7 @@ angular.module('acServerManager.services', ['ngResource']).
 			}
         };
     }).
-	factory('ProcessService', function($resource) {
+	factory('ProcessService', function($resource, $timeout) {
         return {
             ACServerStatus: function(callback) {
                 var resource = $resource('/api/acserver/status');
@@ -189,9 +189,14 @@ angular.module('acServerManager.services', ['ngResource']).
                 });
             },
 			RestartACServer: function (callback) {
-                var resource = $resource('/api/acserver/restart');
+                var resource = $resource('/api/acserver/stop');
                 var result = resource.save(function () {
-                    callback(result);
+					$timeout(function() {
+						var resource = $resource('/api/acserver');
+						var result = resource.save(function () {
+							callback(result);
+						});                    
+					}, 500);
                 });
             },
 			STrackerServerStatus: function(callback) {
@@ -213,9 +218,12 @@ angular.module('acServerManager.services', ['ngResource']).
                 });
             },
 			RestartSTrackerServer: function (callback) {
-                var resource = $resource('/api/strackerserver/restart');
+                var resource = $resource('/api/strackerserver/stop');
                 var result = resource.save(function () {
-                    callback(result);
+                    var resource = $resource('/api/strackerserver');
+					var result = resource.save(function () {
+						callback(result);
+					});
                 });
             }
         };
